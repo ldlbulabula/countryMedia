@@ -6,6 +6,10 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+/**
+ * 用于解决跨越请求问题
+ * */
 @Component
 public class SimpleCORSFilter implements Filter {
 

@@ -22,9 +22,6 @@ public class UserController {
     @ResponseBody
     @PostMapping(value = "/login",produces = "application/json;charset=UTF-8")
     public User login(String code,String faceImg, String nickName){
-//        String openId = WxOpenIdUtil.getOpenId(code);
-//        System.out.println(openId);
-//        return openId;
         String openId = WxOpenIdUtil.getOpenId(code);
         return  userService.login(new User(openId,faceImg,nickName));
      }

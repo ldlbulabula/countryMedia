@@ -12,20 +12,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-//    @Bean
-//    public Docket docket1() {
-//        return new Docket(DocumentationType.SWAGGER_2).groupName("A的分组");
-//    }
-//
-//    @Bean
-//    public Docket docket2() {
-//        return new Docket(DocumentationType.SWAGGER_2).groupName("B的分组");
-//    }
-//
-//    @Bean
-//    public Docket docket3() {
-//        return new Docket(DocumentationType.SWAGGER_2).groupName("C的分组");
-//    }
 
     @Bean
     public Docket docket() {

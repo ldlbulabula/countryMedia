@@ -11,6 +11,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
+    /**
+     * 登录的逻辑：
+     *       得到openid后，判断登录成功与否
+     *       如果成功，则进行register操作（将user保存到数据库）。并且从数据库中返回该user
+     *       如果失败，则不进行register操作（将user保存到数据库）。返回值为null
+     * */
     @Override
     public User login(User user) {
         try {

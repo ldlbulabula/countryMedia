@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("用户")
 public class User {
+
+    private int id;//数据库那边的id
     @ApiModelProperty("唯一标识 openID")
     private String openid;
     @ApiModelProperty("头像保存路径")
@@ -28,6 +30,14 @@ public class User {
     }
 
     public User() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getopenid() {
