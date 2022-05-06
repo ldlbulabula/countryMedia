@@ -39,4 +39,8 @@
         <aop:pointcut id="mypointcut" expression="execution(* com.ldl.service.*.*(..))"/>
         <aop:advisor advice-ref="myadvice" pointcut-ref="mypointcut"/>
     </aop:config>
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+
+    </bean>
 </beans>

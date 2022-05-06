@@ -10,5 +10,8 @@
     <select id="login" resultType="com.ldl.bean.User">
         select * from user where openid=#{openid}
     </select>
+    <select id="getAllUsers" resultType="com.ldl.bean.User">
+        select * from user
+    </select>
 
 </mapper>

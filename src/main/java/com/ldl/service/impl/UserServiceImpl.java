@@ -6,6 +6,8 @@ import com.ldl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -20,12 +22,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(User user) {
         try {
-            if(  !user.getopenid().contains("errcode")&& !user.getopenid().contains("errmsg")  ){
-                userMapper.register(user);
-            }
+            userMapper.register(user);
         } catch (Exception e) {
-                e.printStackTrace();
+            e.printStackTrace();
          }
         return userMapper.login(user.getopenid());
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userMapper.getAllUsers();
     }
 }
