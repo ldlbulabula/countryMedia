@@ -28,6 +28,10 @@ public class UserController {
     @ResponseBody
     @PostMapping(value = "/login",produces = "application/json;charset=UTF-8")
     public User login(String code,String faceImg, String nickName) throws IOException {
+        /*
+          现在得到的名为openid的字符串，其实是一个包含session_key、openid的JSON对象
+          要把JSON对象转成实体类对象（LoginResult），再通过属性名获取真正的openid
+        */
         String openId = WxOpenIdUtil.getOpenId(code);
         LoginResult loginResult =objectMapper.readValue(openId, LoginResult.class);
         openId= loginResult.getOpenid();

@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldl.mapper.VideoMapper">
     <insert id="uploadVideo" parameterType="com.ldl.bean.Video">
-
+        insert into `video`(title,author_openid,video_address,uploadDate)
+        values (#{title},#{author_openid},#{video_address},#{uploadDate})
     </insert>
 </mapper>

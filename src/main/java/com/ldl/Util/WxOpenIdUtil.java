@@ -12,7 +12,7 @@ public class WxOpenIdUtil {
 
     /**
      * 前端传过来一个code
-     * 后端就能通过该方法得到openid
+     * 后端就能通过该方法得到包含session_key、openid的JSON对象
      * */
     public static String getOpenId(String code) {
         String appid = "wx0a88618ba04a7bcc";
