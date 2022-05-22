@@ -10,29 +10,31 @@ public class Video {
     private Integer vid;
     @ApiModelProperty("标题")
     private String title;
-    @ApiModelProperty("作者的openid")
-    private String author_openid;
     @ApiModelProperty("云端地址")
     private String video_address;
     @ApiModelProperty("上传时间")
     private String uploadDate;
+    @ApiModelProperty("上传的用户id")
+    private int uid;
+    @ApiModelProperty("视频简介")
+    private String summary;
 
     @Override
     public String toString() {
         return "Video{" +
                 "vid=" + vid +
                 ", title='" + title + '\'' +
-                ", author_openid='" + author_openid + '\'' +
                 ", video_address='" + video_address + '\'' +
                 ", uploadDate='" + uploadDate + '\'' +
                 '}';
     }
 
-    public Video(String title, String author_openid, String video_address, String uploadDate) {
+    public Video(String title, String video_address, String uploadDate,int uid,String summary) {
+        this.summary = summary;
         this.title = title;
-        this.author_openid = author_openid;
         this.video_address = video_address;
         this.uploadDate = uploadDate;
+        this.uid = uid;
     }
 
     public Integer getVid() {
@@ -51,13 +53,6 @@ public class Video {
         this.title = title;
     }
 
-    public String getAuthor_openid() {
-        return author_openid;
-    }
-
-    public void setAuthor_openid(String author_openid) {
-        this.author_openid = author_openid;
-    }
 
     public String getVideo_address() {
         return video_address;
@@ -73,5 +68,21 @@ public class Video {
 
     public void setUploadDate(String uploadDate) {
         this.uploadDate = uploadDate;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

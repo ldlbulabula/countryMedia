@@ -33,8 +33,8 @@ public class UserController {
           要把JSON对象转成实体类对象（LoginResult），再通过属性名获取真正的openid
         */
         String openId = WxOpenIdUtil.getOpenId(code);
-        LoginResult loginResult =objectMapper.readValue(openId, LoginResult.class);
-        openId= loginResult.getOpenid();
+        LoginResult loginResult = objectMapper.readValue(openId, LoginResult.class);
+        openId = loginResult.getOpenid();
         return userService.login(new User(null, openId, faceImg, nickName));
      }
     @ApiOperation("获取全部用户")

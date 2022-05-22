@@ -13,5 +13,8 @@
     <select id="getAllUsers" resultType="com.ldl.bean.User">
         select * from user
     </select>
+    <select id="selectUserByUid" resultType="com.ldl.bean.User">
+        select * from user where id = #{uid}
+    </select>
 
 </mapper>

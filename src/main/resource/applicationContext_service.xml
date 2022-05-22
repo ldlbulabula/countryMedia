@@ -46,4 +46,5 @@
     <bean class="java.text.SimpleDateFormat">
         <constructor-arg name="pattern" value="yyyy-MM-dd HH:mm:ss"></constructor-arg>
     </bean>
+
 </beans>

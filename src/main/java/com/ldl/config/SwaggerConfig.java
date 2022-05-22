@@ -36,6 +36,7 @@ public class SwaggerConfig {
                 "172.16.8.201:8080/countryMedia",
                 contact,
                 "Apache 2.0",
-                "http://www.apache.org/licenses/LICENSE-2.0");
+                "http://www.apache.org/licenses/LICENSE-2.0"
+                );
     }
 }
