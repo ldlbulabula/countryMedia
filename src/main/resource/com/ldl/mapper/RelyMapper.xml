@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldl.mapper.RelyMapper"><!--这个是-->
+
+    <insert id="insertRely">
+        insert into rely(uid,cid,relyDate,content) value (#{uid},#{cid},#{relyDate},#{content})
+    </insert>
+    <select id="selectRelysByCid" resultType="RelyVo">
+        select   r.id,
+                 r.uid,
+                 r.cid,
+                 r.relyDate,
+                 r.content,
+                 u.faceImg,
+                 u.nickName
+        from rely r left join `user` u on r.uid = u.id where r.cid = #{cid}
+        order by
+        `r`.relyDate;
+    </select>
+
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldl.mapper.ClassMapper">
+    <insert id="insertClass" useGeneratedKeys="true" keyProperty="class_id" parameterType="com.ldl.bean.Class">
+        insert into class(class_id,c_title,c_summary,`type`,openid) value (null,#{c_title},#{c_summary},#{type},#{teacher.openid})
+    </insert>
+    <insert id="addClass_cover" >
+        insert into `class_cover`(class_id,cover) value (#{arg0},#{arg1})
+    </insert>
+    <!--
+    <insert id="addClass_fujian">
+        insert into `class_fujian`(class_id,saveFileName) value (#{arg0},#{arg1})
+    </insert>
+    -->
+
+    <insert id="addClass_music" >
+        insert into `class_music`(class_id,music) values
+        <foreach collection="arg1" item="music" separator=",">
+            (#{arg0},#{music})
+        </foreach>
+    </insert>
+    <insert id="addClass_picture" >
+        insert into `class_picture`(class_id,picture) values
+        <foreach collection="arg1" item="picture" separator=",">
+            (#{arg0},#{picture})
+        </foreach>
+    </insert>
+    <insert id="addClass_video" >
+        insert into `class_video`(class_id,video) values
+        <foreach collection="arg1" item="video" separator=",">
+            (#{arg0},#{video})
+        </foreach>
+    </insert>
+
+</mapper>
