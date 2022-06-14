@@ -2,9 +2,9 @@ package com.ldl.bean.VO;
 
 
 public class RelyVo {
-    private int id;
-    private int uid;
-    private int cid;
+//    private Integer id;
+    private String openid;
+    private Integer cid;
     private String relyDate;
     private String content;
     private String faceImg;
@@ -13,27 +13,28 @@ public class RelyVo {
     public RelyVo() {
     }
 
-    public int getId() {
-        return id;
+//    public Integer getId() {
+//        return rid;
+//    }
+//
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
+
+
+    public String getOpenid() {
+        return openid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public int getCid() {
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 

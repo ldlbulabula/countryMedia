@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldl.mapper.StarMapper"><!--这个是-->
+    <insert id="insertStar">
+        insert into tbl_starclass(cid,openId,isStar) value(#{cid},#{openId},"0")
+    </insert>
+    <insert id="insertLike">
+        insert into tbl_likeclass(cid,openId,isLike) value(#{cid},#{openId},"0")
+    </insert>
+
+    <update id="updateStar">
+        update tbl_starclass set isStar = #{isStar}, starTime = #{createTime} where cid = #{cid} and openId = #{openId}
+    </update>
+    <update id="updateLike">
+        update tbl_likeclass set isLike = #{isLike} where openId = #{openId} and cid = #{cid}
+    </update>
+
+    <select id="selectStar" resultType="java.lang.String">
+        select id from tbl_likeclass where cid = #{cid} and openId = #{openId}
+    </select>
+    <select id="selectLike" resultType="java.lang.String">
+        select id from tbl_starclass where cid = #{cid} and openId = #{openId}
+    </select>
+    <select id="selectStarBy" resultType="com.ldl.bean.Star">
+        select * from tbl_starclass where cid = #{cid} and openId = #{openId}
+    </select>
+</mapper>

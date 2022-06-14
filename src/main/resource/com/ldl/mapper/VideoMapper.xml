@@ -37,5 +37,17 @@
         select * from concern where uid = #{uid} and buid = #{buid}
     </select>
 
+    <select id="selectVideoByCid" resultType="Vedio0">
+        select vid,video from class_video where class_id = #{c_title}
+    </select>
+
+    <select id="selectMusicByCid" resultType="java.lang.String">
+        select music from class_music where class_id =#{c_title}
+    </select>
+
+    <select id="selectPictureByCid" resultType="java.lang.String">
+        select picture from class_picture where class_id = #{c_title}
+    </select>
+
 
 </mapper>

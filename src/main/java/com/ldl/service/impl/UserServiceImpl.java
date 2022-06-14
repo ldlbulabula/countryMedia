@@ -1,6 +1,8 @@
 package com.ldl.service.impl;
 
 import com.ldl.bean.User;
+import com.ldl.bean.VO.AllNum;
+import com.ldl.bean.VO.UserVo;
 import com.ldl.mapper.UserMapper;
 import com.ldl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userMapper.getAllUsers();
+    }
+
+    @Override
+    public List<User> getConcernUserByOpenId(String openId) {
+        return userMapper.selectConcernUserByOpenId(openId);
+    }
+
+    @Override
+    public List<User> getToConcernUserByOpenId(String openId) {
+        return userMapper.selectConcernMeUserByOpenId(openId);
+    }
+
+    @Override
+    public AllNum getNum(String openId) {
+        return userMapper.selectAllNum(openId);
+    }
+
+    @Override
+    public UserVo getUserVoByOpenId(String openId) {
+        return userMapper.selectUserVoByOpenId(openId);
+    }
+
+    @Override
+    public int modifyUser(UserVo userVo) {
+        return userMapper.updateUser(userVo);
     }
 }

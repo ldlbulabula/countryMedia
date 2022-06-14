@@ -1,54 +1,44 @@
 package com.ldl.bean;
 
 public class Rely {
-       private int id;
-       private int uid;
-       private int cid;
+       private Integer id;
+       private String openId;
+       private Integer cid;
        private String relyDate;
        private String content;
 
     public Rely() {
     }
 
-    public Rely(int uid, int cid, String relyDate, String content) {
-        this.uid = uid;
+    public Rely(String uid, Integer cid, String relyDate, String content) {
+        this.openId = uid;
         this.cid = cid;
         this.relyDate = relyDate;
         this.content = content;
     }
 
-    @Override
-    public String toString() {
-        return "Rely{" +
-                "id=" + id +
-                ", uid=" + uid +
-                ", cid=" + cid +
-                ", relyDate='" + relyDate + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getUid() {
-        return uid;
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
-    public int getCid() {
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 

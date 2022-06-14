@@ -4,70 +4,44 @@ package com.ldl.bean.VO;
 import java.util.List;
 
 public class CommentVo {
-    private int cid;
-    private int uid;
-    private int vid;
+    private Integer cid;
+    private String openid;
+    private Integer class_id;
     private String commentDate;
     private String content;
     private String faceImg;
     private String nickName;
     private List<RelyVo> relyList;
 
-    public String getFaceImg() {
-        return faceImg;
-    }
 
-    public void setFaceImg(String faceImg) {
-        this.faceImg = faceImg;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    @Override
-    public String toString() {
-        return "CommentVo{" +
-                "cid=" + cid +
-                ", uid=" + uid +
-                ", vid=" + vid +
-                ", commentDate='" + commentDate + '\'' +
-                ", content='" + content + '\'' +
-                ", faceImg='" + faceImg + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", relyList=" + relyList +
-                '}';
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
 
     public CommentVo() {
     }
 
-    public int getCid() {
+
+
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 
-    public int getUid() {
-        return uid;
+    public String getOpenid() {
+        return openid;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 
-    public int getVid() {
-        return vid;
+    public Integer getClass_id() {
+        return class_id;
     }
 
-    public void setVid(int vid) {
-        this.vid = vid;
+    public void setClass_id(Integer class_id) {
+        this.class_id = class_id;
     }
 
     public String getCommentDate() {
@@ -84,6 +58,22 @@ public class CommentVo {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getFaceImg() {
+        return faceImg;
+    }
+
+    public void setFaceImg(String faceImg) {
+        this.faceImg = faceImg;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public List<RelyVo> getRelyList() {

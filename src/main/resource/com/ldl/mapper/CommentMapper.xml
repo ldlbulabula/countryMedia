@@ -6,23 +6,23 @@
 <mapper namespace="com.ldl.mapper.CommentMapper"><!--这个是-->
     <resultMap id="baseMap" type="CommentVo">
         <id column="cid" property="cid"/>
-        <result column="uid" property="uid"/>
-        <result column="vid" property="vid"/>
+        <result column="class_id" property="class_id"/>
+        <result column="openid" property="openid"/>
         <result column="commentDate" property="commentDate"/>
         <collection property="relyList"  javaType="arrayList" column="cid" ofType="relyVo" select="com.ldl.mapper.RelyMapper.selectRelysByCid"></collection>
     </resultMap>
     <insert id="insertComment">
-        insert into comment(uid,vid,commentDate,content) value (#{uid},#{vid},#{commentDate},#{content})
+        insert into tbl_comment(openid,class_id,commentDate,content) value (#{openId},#{class_id},#{commentDate},#{content})
     </insert>
-    <select id="getCommentVoByVid" resultMap="baseMap">
+    <select id="getCommentVoByClass_id" resultMap="baseMap">
             select   `c`.cid,
-                     `c`.uid,
-                     `c`.vid,
+                     `c`.openid,
+                     `c`.class_id,
                      `c`.commentDate,
                      `c`.content,
                      u.faceImg,
                      u.nickName
-            from comment `c` left join `user` u on `c`.uid = u.id where `c`.vid = #{vid}
+            from tbl_comment `c` left join `user` u on `c`.openid = u.openid where `c`.class_id = #{class_id}
             order by
                 `c`.commentDate;
     </select>

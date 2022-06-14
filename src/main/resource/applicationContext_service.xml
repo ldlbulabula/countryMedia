@@ -15,10 +15,10 @@
     <!--    添加事务的切面-->
     <tx:advice id="myadvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="*select*" read-only="true"/>
-            <tx:method name="*find*" read-only="true"/>
-            <tx:method name="*get*" read-only="true"/>
-            <tx:method name="*search*" read-only="true"/>
+            <tx:method name="*select*" read-only="false"/>
+            <tx:method name="*find*" read-only="false"/>
+            <tx:method name="*get*" read-only="false"/>
+            <tx:method name="*search*" read-only="false"/>
 
             <tx:method name="*insert*" propagation="REQUIRED"/>
             <tx:method name="*save*" propagation="REQUIRED"/>

@@ -7,6 +7,11 @@
         insert into user(openid,nickName,faceImg)
         values (#{openid},#{nickName},#{faceImg})
     </insert>
+
+    <update id="updateUser">
+        update `user` set faceImg = #{faceImg}, nickName = #{nickName},constellation = #{constellation},sex = #{sex},birth = #{birth},address = #{address},signature = #{signature} where openid = #{openId}
+    </update>
+
     <select id="login" resultType="com.ldl.bean.User">
         select * from user where openid=#{openid}
     </select>
@@ -15,6 +20,26 @@
     </select>
     <select id="selectUserByUid" resultType="com.ldl.bean.User">
         select * from user where id = #{uid}
+    </select>
+    <select id="selectUserByOpenId" resultType="com.ldl.bean.User">
+        select * from `user` where openid = #{openId}
+    </select>
+
+    <select id="selectConcernUserByOpenId" resultType="User">
+        select id,openid,nickName,faceImg from `user` where openid in (select buid from concern where uid = #{openid})
+    </select>
+    <select id="selectConcernMeUserByOpenId" resultType="com.ldl.bean.User">
+        select id,openid,nickName,faceImg from `user` where openid in (select openid from concern where buid = #{openid})
+    </select>
+    <select id="selectAllNum" resultType="com.ldl.bean.VO.AllNum">
+        SELECT t1.starNum,t2.classNum,t3.concernNum
+        FROM
+                (SELECT COUNT(*) starNum FROM tbl_starclass WHERE openId = #{openId}) t1,
+                (SELECT COUNT(*) classNum FROM `class` WHERE openid = #{openId}) t2,
+                (SELECT COUNT(*) concernNum FROM concern WHERE uid = #{openId}) t3;
+    </select>
+    <select id="selectUserVoByOpenId" resultType="com.ldl.bean.VO.UserVo">
+        select openid,faceImg,nickName,signature,address,sex,birth,constellation from `user` where openid = #{openId}
     </select>
 
 </mapper>

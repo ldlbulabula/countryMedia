@@ -2,8 +2,8 @@ package com.ldl.bean;
 
 public class Concern {
     private int id;
-    private int uid;
-    private int buid;
+    private String uid;
+    private String buid;
 
     public Concern() {
     }
@@ -25,19 +25,19 @@ public class Concern {
         this.id = id;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
-    public int getBuid() {
+    public String getBuid() {
         return buid;
     }
 
-    public void setBuid(int buid) {
+    public void setBuid(String buid) {
         this.buid = buid;
     }
 }

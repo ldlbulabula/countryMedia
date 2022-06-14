@@ -7,4 +7,7 @@
     <select id="selectPPTByPid" resultType="PPt">
         SELECT * FROM ppt WHERE pid = #{pid};
     </select>
+    <select id="selectAddressByCid" resultType="java.lang.String">
+        select pttAddress from ppt where cid = #{class_id}
+    </select>
 </mapper>

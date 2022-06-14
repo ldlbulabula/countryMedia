@@ -1,55 +1,54 @@
 package com.ldl.bean;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class Comment {
-    private int cid;
-    private int uid;
-    private int vid;
+    @ApiModelProperty(value = "评论的唯一标识",hidden = true)
+    private Integer cid;
+    @ApiModelProperty("评论发表人的id")
+    private String openId;
+    @ApiModelProperty("在哪个课程下发表的")
+    private Integer class_id;
+    @ApiModelProperty("评论日期")
     private String commentDate;
+    @ApiModelProperty("评论内容")
     private String content;
 
     public Comment() {
     }
 
-    public Comment(int uid, int vid, String commentDate, String content) {
-        this.uid = uid;
-        this.vid = vid;
+
+    public Comment(String uid, Integer class_id, String commentDate, String content) {
+        this.openId = uid;
+        this.class_id = class_id;
         this.commentDate = commentDate;
         this.content = content;
     }
 
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "cid=" + cid +
-                ", uid=" + uid +
-                ", vid=" + vid +
-                ", commentDate='" + commentDate + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
 
-    public int getCid() {
+
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 
-    public int getUid() {
-        return uid;
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
-    public int getVid() {
-        return vid;
+    public Integer getClass_id() {
+        return class_id;
     }
 
-    public void setVid(int vid) {
-        this.vid = vid;
+    public void setClass_id(Integer class_id) {
+        this.class_id = class_id;
     }
 
     public String getCommentDate() {

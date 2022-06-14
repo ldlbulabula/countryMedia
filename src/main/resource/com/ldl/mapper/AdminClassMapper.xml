@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldl.mapper.AdminClassMapper">
+    <insert id="insertAdminClass" useGeneratedKeys="true" keyProperty="adminClass_id" parameterType="com.ldl.bean.AdminClass">
+        insert into adminClass(adminClass_id,a_title,a_summary,`type`,openid,uploadDate,
+                               cover,ppt,video) values
+                    (null,#{a_title},#{a_summary},#{type},#{openid},#{uploadDate},
+                    #{cover},#{ppt},#{video})
+    </insert>
+    <select id="getAllAdminClass" resultType="com.ldl.bean.AdminClass">
+        SELECT*FROM`adminclass`
+    </select>
+    <select id="getLatestAdminClass" resultType="com.ldl.bean.AdminClass">
+        SELECT*FROM`adminclass`ORDER BY uploadDate DESC LIMIT 0,1
+    </select>
+</mapper>

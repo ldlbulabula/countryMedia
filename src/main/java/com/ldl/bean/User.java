@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("用户")
 public class User {
-    @ApiModelProperty(value = "数据库那边的id",hidden = true)
+    @ApiModelProperty(value = "数据库那边的id")
     private Integer id;
     @ApiModelProperty("唯一标识 openID")
     private String openid;

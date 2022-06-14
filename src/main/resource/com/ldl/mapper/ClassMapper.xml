@@ -3,18 +3,38 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldl.mapper.ClassMapper">
+    <resultMap id="starClassVo" type="StarClassVo">
+        <id property="classId" column="class_id"/>
+        <result property="title" column="c_title"/>
+        <result property="createTime" column="uploadDate"/>
+        <result property="starNum" column="starNum"/>
+        <result property="user.openid" column="openid"/>
+        <association property="user" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+    </resultMap>
+
+    <resultMap id="classVo" type="com.ldl.bean.VO.ClassVo1">
+       <id property="class_id" column="class_id"/>
+        <result property="c_summary" column="c_summary"/>
+        <result property="c_title" column="c_title"/>
+        <result property="uploadDate" column="uploadDate"/>
+        <result property="type" column="type"/>
+        <result property="cover" column="cover"/>
+        <result property="ppt" column="ppt"/>
+        <result property="isLike" column="isLike"/>
+        <result property="isStar" column="isStar"/>
+        <association property="ppt" select="com.ldl.mapper.PPTMapper.selectAddressByCid" javaType="String" column="class_id"/>
+        <association property="teacher" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+        <collection property="music" select="com.ldl.mapper.VideoMapper.selectMusicByCid" javaType="arrayList" ofType="String" column="class_id"/>
+        <collection property="picture" select="com.ldl.mapper.VideoMapper.selectPictureByCid" javaType="arrayList" ofType="String" column="class_id"/>
+        <collection property="video" select="com.ldl.mapper.VideoMapper.selectVideoByCid" javaType="arrayList" ofType="Vedio0" column="class_id"/>
+    </resultMap>
+
     <insert id="insertClass" useGeneratedKeys="true" keyProperty="class_id" parameterType="com.ldl.bean.Class">
-        insert into class(class_id,c_title,c_summary,`type`,openid) value (null,#{c_title},#{c_summary},#{type},#{teacher.openid})
+        insert into class(class_id,c_title,c_summary,`type`,openid,uploadDate,likeNum,starNum) values (null,#{c_title},#{c_summary},#{type},#{teacher.openid},#{uploadDate},#{likeNum},#{starNum})
     </insert>
     <insert id="addClass_cover" >
-        insert into `class_cover`(class_id,cover) value (#{arg0},#{arg1})
+        insert into `class_cover`(class_id,cover) values (#{arg0},#{arg1})
     </insert>
-    <!--
-    <insert id="addClass_fujian">
-        insert into `class_fujian`(class_id,saveFileName) value (#{arg0},#{arg1})
-    </insert>
-    -->
-
     <insert id="addClass_music" >
         insert into `class_music`(class_id,music) values
         <foreach collection="arg1" item="music" separator=",">
@@ -33,5 +53,111 @@
             (#{arg0},#{video})
         </foreach>
     </insert>
+
+    <insert id="insertStudyTime">
+        insert into tbl_today_study_time(openid,this_day) value(#{openId},#{this_day})
+    </insert>
+    <insert id="insertAllStudyTime">
+        insert into tbl_study_time(openid) value(#{openId})
+    </insert>
+
+    <update id="updateClassStar">
+        update `class` set starNum = starNum + #{addNum} where class_id = #{cid}
+    </update>
+    <update id="updateClassLike">
+        update `class` set likeNum = starNum + #{addNum} where class_id = #{cid}
+    </update>
+    <update id="updateStudyTime">
+        update tbl_today_study_time set study_time = study_time + #{addTime} where openid = #{openId} and this_day = #{thisDay}
+    </update>
+
+    <update id="updateAllStudyTime">
+        update tbl_study_time set all_study_time = all_study_time + #{addTime} where openid = #{openId}
+    </update>
+
+    <update id="updateClass">
+        update `class` set type = #{type},c_title = #{c_title},c_summary = #{c_summary},updateTime = #{updateTime} where class_id = #{cid}
+    </update>
+    <update id="updateCoverByCid">
+        update class_cover set cover = #{cover} where class_id = #{cid}
+    </update>
+
+    <delete id="deleteClassByCid">
+        delete from `class` where class_id = #{cid}
+    </delete>
+
+    <delete id="deleteVideo">
+        delete from class_video where class_id = #{cid}
+    </delete>
+
+    <delete id="deleteMusic">
+        delete from class_music where class_id = #{cid}
+    </delete>
+
+    <delete id="deletePicture">
+        delete from class_picture where class_id = #{cid}
+    </delete>
+
+    <select id="getAllClass" resultType="com.ldl.bean.Class">
+        SELECT * FROM `class`
+    </select>
+
+    <select id="getLatestClass" resultType="com.ldl.bean.Class">
+        SELECT * FROM `class`order by uploadDate desc limit 0,1
+    </select>
+
+    <select id="selectClassVos" resultType="com.ldl.bean.VO.ClassIdVo">
+        SELECT t1.`class_id` classid,t1.c_title title,t1.starNum,t1.`uploadDate` createTime, t2.cover
+        FROM `class` t1,class_cover t2
+        WHERE  t2.`class_id` = t1.`class_id`;
+    </select>
+
+    <select id="selectClassVosComment" resultType="com.ldl.bean.VO.ClassIdVo">
+            select t1.`class_id` classid,t1.c_title title,t1.starNum,t1.`uploadDate` createTime, t2.cover
+            FROM `class` t1,class_cover t2
+            WHERE  t2.`class_id` = t1.`class_id`
+            order by likeNum desc limit 0,#{num}
+    </select>
+
+    <select id="selectClassById" resultMap="classVo">
+        SELECT t1.class_id,t1.c_summary,t1.c_title,t1.uploadDate,t1.`type`,t3.cover,t4.isLike,t5.isStar,t1.openid openid
+        FROM `class` t1,class_cover t3,tbl_likeclass t4,tbl_starclass t5
+        WHERE
+              t3.`class_id` = t1.`class_id`
+          AND t4.`cid` = t1.`class_id`
+          AND t4.`openId` = #{openid}
+          AND t5.`cid` = t1.`class_id`
+          AND t5.`openId` = #{openid}
+          AND t1.class_id = #{cid};
+    </select>
+
+    <select id="selectStarClass" resultMap="starClassVo">
+        select t1.class_id,t1.c_title,t2.cover,t1.uploadDate,t1.starNum,t1.openid
+        from `class` t1,class_cover t2
+        where t1.class_id
+                  in (select cid from tbl_starclass where openid = #{openid})
+        and t2.class_id = t1.class_id
+    </select>
+
+    <select id="selectHistory" resultMap="starClassVo">
+        select t1.class_id,t1.c_title,t2.cover,t1.uploadDate,t1.starNum,t1.openid
+        from `class` t1,class_cover t2
+        where t1.class_id
+            in (select cid from tbl_history where openid = #{openid})
+          and t2.class_id = t1.class_id
+    </select>
+
+    <select id="selectStudyTimeByOpenId" resultType="com.ldl.bean.VO.StudyTimeVo">
+        select t1.study_time thisDayTime,t2.all_study_time allStudyTime from tbl_today_study_time t1,tbl_study_time t2
+        where t1.openid = #{openId} and t2.openid = #{openId} and t1.this_day = #{thisDay}
+    </select>
+
+    <select id="selectStudyTime" resultType="java.lang.String">
+        select openid from tbl_today_study_time where openid = #{openId} and this_day = #{thisDay}
+    </select>
+
+    <select id="selectAllStudyTime" resultType="java.lang.String">
+        select openid from tbl_study_time where openid = #{openId}
+    </select>
 
 </mapper>

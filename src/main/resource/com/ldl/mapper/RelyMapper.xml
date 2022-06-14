@@ -5,20 +5,21 @@
 
 <mapper namespace="com.ldl.mapper.RelyMapper"><!--这个是-->
 
+    
     <insert id="insertRely">
-        insert into rely(uid,cid,relyDate,content) value (#{uid},#{cid},#{relyDate},#{content})
+        insert into tbl_rely(openid,cid,relyDate,content) value (#{openId},#{cid},#{relyDate},#{content})
     </insert>
     <select id="selectRelysByCid" resultType="RelyVo">
-        select   r.id,
-                 r.uid,
-                 r.cid,
-                 r.relyDate,
-                 r.content,
-                 u.faceImg,
-                 u.nickName
-        from rely r left join `user` u on r.uid = u.id where r.cid = #{cid}
-        order by
-        `r`.relyDate;
+        SELECT
+                          r.`openid`,
+                          r.`cid`,
+                          r.relyDate,
+                          r.content,
+                          u.faceImg,
+                          u.nickName
+        FROM tbl_rely r LEFT JOIN `user` u ON r.openid = u.openid WHERE r.cid = #{cid}
+        ORDER BY
+            `r`.relyDate
     </select>
 
 

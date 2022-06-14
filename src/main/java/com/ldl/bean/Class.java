@@ -3,7 +3,6 @@ package com.ldl.bean;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-
 import java.util.List;
 
 @ApiModel("课程")
@@ -25,14 +24,30 @@ public class Class {
     private List<String> video;
     @ApiModelProperty("课程封面")
     private String cover;
+    @ApiModelProperty("课程ppt")
+    private String ppt;
     @ApiModelProperty("课程上传人——老师")
     private User teacher;
+    @ApiModelProperty("课程上传时间")
+    private String uploadDate;
+    @ApiModelProperty("点赞的人数")
+    private String likeNum;
+    @ApiModelProperty("收藏的人数")
+    private String starNum;
 
     public Class() {
     }
 
-
-
+    public Class(Integer class_id, String c_title, String c_summary, String type, List<String> video, String cover, String ppt, String uploadDate) {
+        this.class_id = class_id;
+        this.c_title = c_title;
+        this.c_summary = c_summary;
+        this.type = type;
+        this.video = video;
+        this.cover = cover;
+        this.ppt = ppt;
+        this.uploadDate = uploadDate;
+    }
 
     public Integer getClass_id() {
         return class_id;
@@ -107,7 +122,39 @@ public class Class {
         this.video = video;
     }
 
-    public Class(Integer class_id, String c_title, String c_summary, String type, List<String> music, List<String> picture, List<String> video, String cover, User teacher) {
+    public String getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(String uploadDate) {
+        this.uploadDate = uploadDate;
+    }
+
+    public String getPpt() {
+        return ppt;
+    }
+
+    public void setPpt(String ppt) {
+        this.ppt = ppt;
+    }
+
+    public String getLikeNum() {
+        return likeNum;
+    }
+
+    public void setLikeNum(String likeNum) {
+        this.likeNum = likeNum;
+    }
+
+    public String getStarNum() {
+        return starNum;
+    }
+
+    public void setStarNum(String starNum) {
+        this.starNum = starNum;
+    }
+
+    public Class(Integer class_id, String c_title, String c_summary, String type, List<String> music, List<String> picture, List<String> video, String cover, User teacher, String uploadDate, String starNum, String likeNum) {
         this.class_id = class_id;
         this.c_title = c_title;
         this.c_summary = c_summary;
@@ -117,6 +164,9 @@ public class Class {
         this.video = video;
         this.cover = cover;
         this.teacher = teacher;
+        this.uploadDate = uploadDate;
+        this.likeNum = likeNum;
+        this.starNum = starNum;
     }
 
     @Override

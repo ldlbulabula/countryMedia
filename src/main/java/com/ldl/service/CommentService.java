@@ -7,9 +7,9 @@ import java.util.List;
 
 
 public interface CommentService {
-    List<CommentVo> queryCommentVo(int vid);
+    List<CommentVo> queryCommentVo(String class_id);
 
-    int addComment(int uid,int vid,String content);
+    Integer addComment(String openId,String class_id,String content);
 
-    int addRely(int uid,int cid,String content);
+    Integer addRely(String openId,String cid,String content);
 }

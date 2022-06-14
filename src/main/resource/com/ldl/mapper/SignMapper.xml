@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldl.mapper.SignMapper">
+
+    <insert id="insertSign">
+        insert into tbl_signday(openid,sign_time) value(#{openId},#{thisDay})
+    </insert>
+
+    <insert id="insertSignUser">
+        insert into tbl_sign_num(openid,continuous_sign,all_sgin) value(#{openId},#{continueSignNum},#{maxSignNum})
+    </insert>
+
+    <update id="updateContinueSignDay">
+        update tbl_sign_num set continuous_sign = #{continueNum} where openid = #{openId}
+    </update>
+
+    <update id="updateMaxSignDay">
+        update tbl_sign_num set all_sgin = #{maxNum} where openid = #{openId}
+    </update>
+
+    <select id="selectIsSignThisDay" resultType="java.lang.String">
+        select sid from tbl_signday where openid = #{openId} and sign_time = #{thisDay}
+    </select>
+
+    <select id="selectSidByOpenId" resultType="sign">
+        select * from tbl_sign_num where openid = #{openId}
+    </select>
+    <select id="selectSignVoByOpenId" resultType="com.ldl.bean.VO.SignVo">
+        SELECT t1.`all_sgin` maxSignNum,t1.`continuous_sign` countiueNum,allNum
+        FROM
+            tbl_sign_num t1,(SELECT COUNT(*) allNum FROM tbl_signday WHERE openid = #{openId}) t2 WHERE t1.`openid` = #{openId}
+    </select>
+
+
+</mapper>

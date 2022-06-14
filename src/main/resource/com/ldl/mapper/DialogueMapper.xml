@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ldl.mapper.DialogueMapper"><!--这个是-->
+
+    <insert id="insertDialogue">
+        insert into tbl_dialogue(content,create_time,openid,to_openid,to_user_isLook,type)
+        value (#{content},#{createTime},#{openid},#{to_openid},#{to_user_isLook},#{type})
+    </insert>
+
+    <update id="updateDialogueIsLookByOpenIdAndToOpenId">
+        update tbl_dialogue set to_user_isLook = '1' where openid = #{openId} and to_openid = #{toOpenId}
+    </update>
+
+    <select id="selectAllDialogueByOpenId" resultType="com.ldl.bean.VO.DialogueVo">
+        select t1.did,t1.create_time createTime,t1.content,t2.faceImg,t2.nickName,t1.`type`,t1.`openid`,t1.`to_openid`
+        from tbl_dialogue t1,`user` t2
+        where t1.openid = t2.openid and
+              ((t1.openid = #{openId} and t1.to_openid = #{toOpenId}) or (t1.openid = #{toOpenId} and t1.to_openid = #{openId}))
+    </select>
+
+    <select id="selectDialogueNumByToOpenId" resultType="java.lang.Integer">
+        select count(*) from tbl_dialogue where to_openid = #{toOpenId}
+    </select>
+
+    <select id="selectDialogueVo" resultType="com.ldl.bean.DialogueMenuVo">
+        SELECT
+            DISTINCT  t1.`openid`,t3.nickName,t3.faceImg,t2.newNum
+        FROM
+            tbl_dialogue t1,(SELECT  COUNT(*) newNum FROM tbl_dialogue WHERE to_openid = #{toOpenId} AND to_user_isLook = '0') t2,`user` t3
+        WHERE
+            t3.openId = t1.openId AND t1.to_openid = #{toOpenId}
+        ORDER BY newNum;
+    </select>
+</mapper>

@@ -20,14 +20,14 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public VideoVo getVideoByVid(int vid) {
+    public VideoVo getVideoByVid(String vid) {
         VideoVo videoVo = videoMapper.selectVideo(vid);
         System.out.println(videoVo);
         return videoVo;
     }
 
     @Override
-    public int getConcern(int uid, int buid) {
+    public int getConcern(String uid, String buid) {
         Concern concern = videoMapper.selectConcernBy(uid, buid);
         if (concern == null){
             return 0;
@@ -37,7 +37,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public int addConcern(int uid, int buid) {
+    public int addConcern(String uid, String buid) {
         Concern concern = videoMapper.selectConcernBy(uid, buid);
         int i = 0;
         if (concern == null){
@@ -47,7 +47,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public int removerConcern(int uid, int buid) {
+    public int removerConcern(String uid, String buid) {
         return videoMapper.deleteConcern(uid, buid);
     }
 }

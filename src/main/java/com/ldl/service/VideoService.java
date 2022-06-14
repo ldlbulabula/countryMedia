@@ -5,13 +5,14 @@ import com.ldl.bean.Video;
 
 
 public interface VideoService {
+
     Integer uploadVideo(Video video);
 
-    VideoVo getVideoByVid(int vid);
+    VideoVo getVideoByVid(String vid);
 
-    int getConcern(int uid,int buid);
+    int getConcern(String uid,String buid);
 
-    int addConcern(int uid,int buid);
+    int addConcern(String uid,String buid);
 
-    int removerConcern(int uid,int buid);
+    int removerConcern(String uid,String buid);
 }

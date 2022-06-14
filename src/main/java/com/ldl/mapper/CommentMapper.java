@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CommentMapper {
 
-    int insertComment(Comment comment);
+    Integer insertComment(Comment comment);
 
-    List<CommentVo> getCommentVoByVid(int vid);
+    List<CommentVo> getCommentVoByClass_id(String class_id);
 }

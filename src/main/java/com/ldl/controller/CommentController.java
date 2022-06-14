@@ -3,13 +3,12 @@ package com.ldl.controller;
 
 import com.ldl.bean.VO.CommentVo;
 import com.ldl.service.CommentService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,25 +23,31 @@ public class CommentController {
      * @Author hjh
      * @return 2022/5/10
      */
+
+    /**
+     * 评论接口
+     * @Author ldl
+     * @return 2022/5/22 进行更改
+     */
     @ApiOperation("获取评论接口")
-    @GetMapping("/")
+    @GetMapping("/getComment")
     @ResponseBody
-    public List<CommentVo> getComment(int vid){
-        return commentService.queryCommentVo(vid);
+    public List<CommentVo> getComment(String class_id){
+        return commentService.queryCommentVo(class_id);
     }
 
 
-    @ApiOperation("/评论得接口")
-    @PutMapping("/")
+    @ApiOperation("/发表评论接口")
+    @PostMapping("/addComment")
     @ResponseBody
-    public int addComment(int uid,int vid,String content) {
-        return commentService.addComment(uid, vid, content);
+    public Integer addComment(String openid,String class_id,String content) {
+        return commentService.addComment(openid, class_id, content);
     }
 
-        @ApiOperation("/回复得接口")
-        @PutMapping("/rely")
+        @ApiOperation("/回复接口")
+        @PostMapping("/rely")
         @ResponseBody
-        public int addRely ( int uid, int cid, String content){
-            return commentService.addRely(uid, cid, content);
+        public Integer addRely (String openid,String cid, String content){
+            return commentService.addRely(openid, cid, content);
         }
 }
