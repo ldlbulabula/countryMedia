@@ -1,13 +1,11 @@
 package com.ldl.controller;
-import com.ldl.bean.VO.VideoVo;
-import com.ldl.bean.Video;
 import com.ldl.service.VideoService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 
@@ -16,6 +14,7 @@ public class VideoController {
     @Autowired
     VideoService videoService;
     @Autowired
+    @Qualifier("with_Hms")
     SimpleDateFormat simpleDateFormat;
 
 //

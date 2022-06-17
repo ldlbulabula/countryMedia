@@ -2,6 +2,7 @@ package com.ldl.service.impl;
 
 import com.ldl.Util.DateUtil;
 import com.ldl.bean.Sign;
+import com.ldl.bean.SignDateList;
 import com.ldl.bean.VO.SignVo;
 import com.ldl.mapper.SignMapper;
 import com.ldl.service.SignService;
@@ -24,8 +25,6 @@ public class SignServiceImpl implements SignService {
 
     @Autowired
     private SignMapper signMapper;
-
-
 
     @Override
     public void signThisDay(String openId) {
@@ -72,6 +71,11 @@ public class SignServiceImpl implements SignService {
         String beforeYesterdaySid = signMapper.selectIsSignThisDay(openId, DateUtil.formatToDayAndSupOneDay(new Date(),-2));
         String sid = signMapper.selectIsSignThisDay(openId, DateUtil.formatToDay(new Date()));
         SignVo signVo = signMapper.selectSignVoByOpenId(openId);
+
+        if(signVo==null){
+            signVo = new SignVo();
+        }
+
         //没签到
         if (yesterdaySid == null){
             signVo.setIsSignYesterday("0");
@@ -93,6 +97,21 @@ public class SignServiceImpl implements SignService {
             signVo.setIsSign("1");
             return signVo;
         }
+
+    }
+
+    @Override
+    public SignDateList getSignDateList() {
+        Calendar today = DateUtil.formatToDayAndSupOneDay(0);
+        return new SignDateList(
+                today.get(Calendar.MONTH)+1,
+                today.get(Calendar.DAY_OF_MONTH),
+                DateUtil.formatToDayAndSupOneDay(-2).get(Calendar.DAY_OF_MONTH),
+                DateUtil.formatToDayAndSupOneDay(-1).get(Calendar.DAY_OF_MONTH),
+                today.get(Calendar.DAY_OF_MONTH),
+                DateUtil.formatToDayAndSupOneDay(1).get(Calendar.DAY_OF_MONTH),
+                DateUtil.formatToDayAndSupOneDay(2).get(Calendar.DAY_OF_MONTH)
+        );
 
     }
 }

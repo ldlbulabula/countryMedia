@@ -2,6 +2,7 @@ package com.ldl.service;
 
 import com.ldl.bean.Class;
 import com.ldl.bean.VO.*;
+import com.ldl.bean.WatchingResult;
 import com.ldl.bean.dto.ClassDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +30,13 @@ public interface ClassService {
 
     StudyTimeVo getStudyTimeVo(String openId);
 
-    void updateStudyTime(String openId,String addTime);
+    WatchingResult updateStudyTime(String openId, String start, String end);
 
     int updateClass(ClassDto classDto);
+
+    List<Class> getClassByType(String type);
+
+    List<Class> getConcernClass(String openid);
+
+    List<StarClassVo> getlatestLearning(String openid);
 }

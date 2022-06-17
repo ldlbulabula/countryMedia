@@ -3,11 +3,13 @@ import com.ldl.bean.AdminClass;
 import com.ldl.bean.Class;
 import com.ldl.bean.User;
 import com.ldl.bean.VO.StudyTimeVo;
+import com.ldl.bean.WatchingResult;
 import com.ldl.bean.dto.ClassDto;
 import com.ldl.service.AdminClassService;
 import com.ldl.service.ClassService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,9 +25,12 @@ public class ClassController {
     @Autowired
     private ClassService classService;
     @Autowired
-    private SimpleDateFormat simpleDateFormat;
+    @Qualifier("with_Hms")
+    SimpleDateFormat simpleDateFormat;
     @Autowired
     private AdminClassService adminClassService;
+//    @Autowired
+//    private WatchTimeService watchTimeService;
     /**
      * 课程接口
      * @Author ldl
@@ -34,7 +39,7 @@ public class ClassController {
     @ApiOperation("上传课程,openid不可为空")
     @PostMapping(value = "/uploadClass",produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Class uploadClass(String openId,String c_title, String c_summary, String type, @RequestParam(value = "music[]",required = false) ArrayList<String> music, @RequestParam(value = "picture[]",required = false) ArrayList<String> picture, @RequestParam(value = "video[]",required = false) ArrayList<String> video, String cover, String openid){
+    public Class uploadClass(String c_title, String c_summary, String type, @RequestParam(value = "music[]",required = false) ArrayList<String> music, @RequestParam(value = "picture[]",required = false) ArrayList<String> picture, @RequestParam(value = "video[]",required = false) ArrayList<String> video, String cover, String openid){
 
         Class clazz = classService.uploadClass(
              new Class(              //课程
@@ -116,10 +121,7 @@ public class ClassController {
     @PostMapping("/getClassByCid")
     @ResponseBody
     public Object getClassByCid(String cid,String openId){
-        System.out.println("cid:" + cid);
-        System.out.println("openId:" + openId);
         if (openId.equals("undefined")){
-            System.out.println("进入了undefined");
             return "openid is undefined";
         }
         return classService.getClassByCid(cid, openId);
@@ -156,8 +158,8 @@ public class ClassController {
     @ApiOperation("修改学习时间")
     @PostMapping("/updateStudyTime")
     @ResponseBody
-    public void modifyStudyTime(String openId,String addTime){
-        classService.updateStudyTime(openId,addTime);
+    public WatchingResult modifyStudyTime(String openId, String start, String end){
+       return classService.updateStudyTime(openId,start,end);
     }
 
     @ApiOperation("编辑课程")
@@ -167,4 +169,33 @@ public class ClassController {
         return classService.updateClass(classDto);
     }
 
+
+    @ApiOperation("分类获取课程")
+    @PostMapping(value = "/getClassByType",produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public List<Class> getClassByType(String type){
+        return classService.getClassByType(type);
+    }
+
+    @ApiOperation("获取关注人发布的课程")
+    @PostMapping(value = "/getConcernClass",produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public List<Class> getConcernClass(String openid){
+        return classService.getConcernClass(openid);
+    }
+
+    @ApiOperation("获取最近学习")
+    @PostMapping(value = "/latestLearning",produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Object latestLearning(String openid){
+        return classService.getlatestLearning(openid);
+    }
+
+
+//    @ApiOperation("记录学习时间")
+//    @PostMapping("/addWatchingTime")
+//    @ResponseBody
+//    public int addWatchingTime(long start,long end,String openid){
+//       return watchTimeService.addWatchTime(start,end,openid);
+//    }
 }

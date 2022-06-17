@@ -3,8 +3,6 @@ package com.ldl.controller;
 
 import com.ldl.bean.VO.CommentVo;
 import com.ldl.service.CommentService;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

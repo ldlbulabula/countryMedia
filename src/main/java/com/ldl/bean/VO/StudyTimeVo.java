@@ -1,11 +1,31 @@
 package com.ldl.bean.VO;
 
+import com.ldl.bean.WatchingResult;
+
 import java.util.List;
 
 public class StudyTimeVo {
     String thisDayTime;
     String allStudyTime;
     List<StarClassVo> classVo;
+    WatchingResult allStudyTimeResult;
+    WatchingResult thisDayTimeResult;
+
+    public WatchingResult getAllStudyTimeResult() {
+        return allStudyTimeResult;
+    }
+
+    public void setAllStudyTimeResult(WatchingResult allStudyTimeResult) {
+        this.allStudyTimeResult = allStudyTimeResult;
+    }
+
+    public WatchingResult getThisDayTimeResult() {
+        return thisDayTimeResult;
+    }
+
+    public void setThisDayTimeResult(WatchingResult thisDayTimeResult) {
+        this.thisDayTimeResult = thisDayTimeResult;
+    }
 
     public String getThisDayTime() {
         return thisDayTime;

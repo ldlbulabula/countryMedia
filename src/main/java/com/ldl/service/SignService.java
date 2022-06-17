@@ -1,5 +1,6 @@
 package com.ldl.service;
 
+import com.ldl.bean.SignDateList;
 import com.ldl.bean.VO.SignVo;
 
 public interface SignService {
@@ -8,5 +9,5 @@ public interface SignService {
 
     //今天是否签到了
     SignVo isSignThisDay(String openId);
-
+    SignDateList getSignDateList();
 }

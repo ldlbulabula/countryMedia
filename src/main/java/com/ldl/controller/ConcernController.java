@@ -5,6 +5,7 @@ import com.ldl.service.UserService;
 import com.ldl.service.VideoService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class ConcernController {
     @Autowired
     VideoService videoService;
     @Autowired
+    @Qualifier("with_Hms")
     SimpleDateFormat simpleDateFormat;
 
     @Autowired
@@ -27,8 +29,6 @@ public class ConcernController {
     @PostMapping("/addConcern")
     @ResponseBody
     public int addConcern(String openid,String bopenid) {
-        System.out.println("uid：" + openid);
-        System.out.println("buid：" + bopenid);
         return videoService.addConcern(openid, bopenid);
     }
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldl.mapper.LearnTimeMapper">
+    <insert id="insertLearn">
+        insert into tbl_learnday(openid,learn_time) value(#{openId},#{thisDay})
+    </insert>
+
+    <insert id="insertLearnUser">
+        insert into tbl_learn_num(openid,continuous_learn,all_learn) value(#{openId},#{continueLearnNum},#{maxLearnNum})
+    </insert>
+
+    <update id="updateContinueLearnDay">
+        update tbl_learn_num set continuous_learn = #{continueNum} where openid = #{openId}
+    </update>
+
+    <update id="updateMaxLearnDay">
+        update tbl_learn_num set all_learn = #{maxNum} where openid = #{openId}
+    </update>
+
+    <select id="selectIsLearnThisDay" resultType="java.lang.String">
+        select lid from tbl_learnday where openid = #{openId} and learn_time = #{thisDay}
+    </select>
+
+    <select id="selectLidByOpenId" resultType="com.ldl.bean.LearnTime">
+        select * from tbl_learn_num where openid = #{openId}
+    </select>
+    <select id="selectLearnVoByOpenId" resultType="com.ldl.bean.VO.LearnTimeVO">
+        SELECT t1.`all_learn` maxLearnNum,t1.`continuous_learn` countiueNum,allNum
+        FROM
+            tbl_learn_num t1,(SELECT COUNT(*) allNum FROM tbl_learnday WHERE openid = #{openId}) t2 WHERE t1.`openid` = #{openId}
+    </select>
+
+</mapper>

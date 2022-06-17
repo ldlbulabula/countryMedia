@@ -22,5 +22,7 @@ public interface UserMapper {
 
     UserVo selectUserVoByOpenId(@Param("openId")String openId);
 
-    int updateUser(UserVo user);
+    int updateUser(@Param("openid")String openid,@Param("field")String field,@Param("value")String value);
+
+    int updateFaceImgAndNickName(@Param("openid")String openid,@Param("faceImg") String faceImg,@Param("nickName") String nickName);
 }

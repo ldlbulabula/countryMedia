@@ -1,6 +1,7 @@
 package com.ldl.bean.VO;
 
 import com.ldl.bean.User;
+import com.ldl.bean.WatchingResult;
 
 public class StarClassVo {
     private int classId;
@@ -9,6 +10,7 @@ public class StarClassVo {
     private String cover;
     private String createTime;
     private User user;
+
 
     public int getClassId() {
         return classId;

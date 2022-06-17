@@ -21,9 +21,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public VideoVo getVideoByVid(String vid) {
-        VideoVo videoVo = videoMapper.selectVideo(vid);
-        System.out.println(videoVo);
-        return videoVo;
+        return videoMapper.selectVideo(vid);
     }
 
     @Override

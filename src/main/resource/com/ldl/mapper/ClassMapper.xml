@@ -29,6 +29,25 @@
         <collection property="video" select="com.ldl.mapper.VideoMapper.selectVideoByCid" javaType="arrayList" ofType="Vedio0" column="class_id"/>
     </resultMap>
 
+    <resultMap id="classVo2" type="com.ldl.bean.VO.classVo2">
+        <id property="class_id" column="class_id"/>
+        <result property="c_summary" column="c_summary"/>
+        <result property="c_title" column="c_title"/>
+        <result property="uploadDate" column="uploadDate"/>
+        <result property="type" column="type"/>
+        <result property="cover" column="cover"/>
+        <result property="ppt" column="ppt"/>
+        <result property="likeNum" column="likeNum"/>
+        <result property="starNum" column="starNum"/>
+        <association property="ppt" select="com.ldl.mapper.PPTMapper.selectAddressByCid" javaType="String" column="class_id"/>
+        <association property="teacher" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+        <association property="cover" select="com.ldl.mapper.ClassMapper.getClassCover" javaType="String" column="class_id"/>
+        <collection property="music" select="com.ldl.mapper.VideoMapper.selectMusicByCid" javaType="arrayList" ofType="String" column="class_id"/>
+        <collection property="picture" select="com.ldl.mapper.VideoMapper.selectPictureByCid" javaType="arrayList" ofType="String" column="class_id"/>
+        <collection property="video" select="com.ldl.mapper.VideoMapper.selectVideoByCid" javaType="arrayList" ofType="Vedio0" column="class_id"/>
+
+    </resultMap>
+
     <insert id="insertClass" useGeneratedKeys="true" keyProperty="class_id" parameterType="com.ldl.bean.Class">
         insert into class(class_id,c_title,c_summary,`type`,openid,uploadDate,likeNum,starNum) values (null,#{c_title},#{c_summary},#{type},#{teacher.openid},#{uploadDate},#{likeNum},#{starNum})
     </insert>
@@ -159,5 +178,24 @@
     <select id="selectAllStudyTime" resultType="java.lang.String">
         select openid from tbl_study_time where openid = #{openId}
     </select>
+    <select id="getClassByType" resultMap="classVo2">
+        SELECT * FROM `class` WHERE TYPE=#{type}
+    </select>
+    <select id="getConcernClass" resultMap="classVo2">
+        SELECT cl.class_id,cl.c_summary,cl.type,cl.uploadDate,cl.likeNum,cl.starNum,cl.openid,cl.c_title
+        FROM `class` cl,`concern` co
+        WHERE cl.openid=co.buid AND co.uid=#{openid}
+    </select>
 
+    <select id="getlatestLearning" resultMap="starClassVo">
+        select t1.class_id,t1.c_title,t2.cover,t1.uploadDate,t1.starNum,t1.openid
+        from `class` t1,class_cover t2
+        where t1.class_id
+            in (select cid from tbl_history where openid = #{openid} ORDER BY lookTime DESC)
+          and t2.class_id = t1.class_id
+          LIMIT 0,3
+    </select>
+    <select id="getClassCover" resultType="String">
+        SELECT cover FROM`class_cover`WHERE class_id=#{class_id}
+    </select>
 </mapper>

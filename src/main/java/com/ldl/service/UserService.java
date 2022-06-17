@@ -19,5 +19,7 @@ public interface UserService {
 
     UserVo getUserVoByOpenId(String openId);
 
-    int modifyUser(UserVo userVo);
+    int modifyUser(String openid,String field,String value);
+
+    int updateFaceImgAndNickName(String openid, String faceImg, String nickName);
 }

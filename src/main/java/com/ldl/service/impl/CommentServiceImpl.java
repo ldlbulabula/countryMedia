@@ -7,6 +7,7 @@ import com.ldl.mapper.CommentMapper;
 import com.ldl.mapper.RelyMapper;
 import com.ldl.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ public class CommentServiceImpl implements CommentService {
     private RelyMapper relyMapper;
 
     @Autowired
+    @Qualifier("with_Hms")
     SimpleDateFormat simpleDateFormat;
     /**
      * 获取评论
@@ -30,14 +32,12 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<CommentVo> queryCommentVo(String class_id) {
-        List<CommentVo> commentVoByClass_id = commentMapper.getCommentVoByClass_id(class_id);
-        System.out.println(commentVoByClass_id);
-        return commentVoByClass_id;
+        return commentMapper.getCommentVoByClass_id(class_id);
     }
 
     @Override
     public Integer addComment(String openid, String class_id, String content) {
-        System.out.println(openid + "\n" + class_id  + "\n" + content + "\n");
+
         Comment comment = new Comment(openid,Integer.parseInt(class_id),simpleDateFormat.format(new Date()),content);
         return commentMapper.insertComment(comment);
     }

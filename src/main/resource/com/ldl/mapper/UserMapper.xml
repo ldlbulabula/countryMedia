@@ -9,9 +9,11 @@
     </insert>
 
     <update id="updateUser">
-        update `user` set faceImg = #{faceImg}, nickName = #{nickName},constellation = #{constellation},sex = #{sex},birth = #{birth},address = #{address},signature = #{signature} where openid = #{openId}
+        UPDATE `user` SET ${field}=#{value} WHERE openid=#{openid}
     </update>
-
+    <update id="updateFaceImgAndNickName">
+        UPDATE `user` SET faceImg=#{faceImg},nickName=#{nickName} WHERE openid=#{openid}
+    </update>
     <select id="login" resultType="com.ldl.bean.User">
         select * from user where openid=#{openid}
     </select>

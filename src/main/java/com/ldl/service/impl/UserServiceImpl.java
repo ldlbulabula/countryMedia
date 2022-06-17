@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         try {
             userMapper.register(user);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
+
          }
         return userMapper.login(user.getopenid());
     }
@@ -57,7 +57,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int modifyUser(UserVo userVo) {
-        return userMapper.updateUser(userVo);
+    public int modifyUser(String openid,String field,String value) {
+        try {
+            return userMapper.updateUser(openid,field,value);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    @Override
+    public int updateFaceImgAndNickName(String openid, String faceImg, String nickName) {
+        try {
+            return userMapper.updateFaceImgAndNickName(openid,faceImg,nickName);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

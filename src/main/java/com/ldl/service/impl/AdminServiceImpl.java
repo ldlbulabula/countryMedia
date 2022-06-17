@@ -4,6 +4,7 @@ import com.ldl.bean.AdminPublic;
 import com.ldl.mapper.PublicMapper;
 import com.ldl.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -16,7 +17,8 @@ public class AdminServiceImpl implements AdminService {
     private PublicMapper publicMapper;
 
     @Autowired
-    private SimpleDateFormat simpleDateFormat;
+    @Qualifier("with_Hms")
+    SimpleDateFormat simpleDateFormat;
 
     @Override
     public void addPublic(String content,String title) {

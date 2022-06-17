@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldl.mapper.WatchTimeMapper">
+    <insert id="addWatchTime">
+        INSERT INTO `watching_time`(openid,watch_time_mils,watch_date) VALUES(#{openid},#{watch_time_mils},#{watch_date})
+    </insert>
+    <select id="selectIsWatchToday" resultType="com.ldl.bean.WatchingTime">
+        select *from `watching_time`where openid=#{openid} and watch_date=#{watch_date}
+    </select>
+    <update id="WatchTimeCumulate">
+        UPDATE `watching_time` SET watch_time_mils=watch_time_mils+ #{watch_time_mils} WHERE openid=#{openid} and watch_date=#{watch_date}
+    </update>
+</mapper>

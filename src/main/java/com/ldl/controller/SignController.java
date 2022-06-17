@@ -1,6 +1,5 @@
 package com.ldl.controller;
-
-import com.ldl.mapper.SignMapper;
+import com.ldl.bean.SignDateList;
 import com.ldl.service.SignService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +28,12 @@ public class SignController {
     public void signThisDay(String openId){
         signService.signThisDay(openId);
     }
+
+    @ApiOperation("获取今天的月和日，以及前后5天的日期")
+    @PostMapping("/getSignDateList")
+    @ResponseBody
+    public SignDateList getSignDateList(){
+        return signService.getSignDateList();
+    }
+
 }

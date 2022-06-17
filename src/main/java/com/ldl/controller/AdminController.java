@@ -6,6 +6,7 @@ import com.ldl.service.AdminService;
 import com.ldl.service.ClassService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class AdminController {
     @Autowired
     private ClassService classService;
     @Autowired
+    @Qualifier("with_Hms")
     SimpleDateFormat simpleDateFormat;
 
     @Autowired
@@ -34,11 +36,9 @@ public class AdminController {
     @PostMapping(value = "/uploadAdminClass",produces = "application/json;charset=UTF-8")
     @ResponseBody
     public AdminClass  uploadAdminClass(String a_title, String a_summary,String ppt, String video, String cover,String openid){
-        AdminClass adminClass = adminClassService.uploadAdminClass(new AdminClass(
+        return adminClassService.uploadAdminClass(new AdminClass(
                 null,a_title,a_summary,ppt,video,cover,"普法",simpleDateFormat.format(new Date()),openid
         ));
-        System.out.println(adminClass);
-        return adminClass;
     }
 
     @ApiOperation("获取全部管理员课程")

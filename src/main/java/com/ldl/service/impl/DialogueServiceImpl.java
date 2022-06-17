@@ -6,6 +6,7 @@ import com.ldl.bean.VO.DialogueVo;
 import com.ldl.mapper.DialogueMapper;
 import com.ldl.service.DialogueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -18,7 +19,8 @@ public class DialogueServiceImpl implements DialogueService {
     private DialogueMapper dialogueMapper;
 
     @Autowired
-    private SimpleDateFormat simpleDateFormat;
+    @Qualifier("with_Hms")
+    SimpleDateFormat simpleDateFormat;
 
     @Override
     public List<DialogueVo> getDialogueVOsByOpenIdAndToOpenId(String openId, String toOpenId) {

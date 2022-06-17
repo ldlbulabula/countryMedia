@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -90,8 +89,16 @@ public class UserController {
     @ApiOperation("修改个人信息")
     @ResponseBody
     @PostMapping("/updateUserMessage")
-    public int updateUser(@RequestBody UserVo userVo){
-        return userService.modifyUser(userVo);
+    public int updateUser(String openid,String field,String value){
+        return userService.modifyUser(openid,field,value);
     }
 
+
+    @ApiOperation("登录接口")
+    @ResponseBody
+    @PostMapping(value = "/updateFaceImgAndNickName",produces = "application/json;charset=UTF-8")
+    public int updateFaceImgAndNickName(String openid,String faceImg, String nickName){
+
+        return userService.updateFaceImgAndNickName(openid,faceImg,nickName);
+    }
 }

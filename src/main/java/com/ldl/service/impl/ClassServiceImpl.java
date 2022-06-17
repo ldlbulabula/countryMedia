@@ -4,6 +4,7 @@ import com.ldl.Util.ObsUtil;
 import com.ldl.bean.Class;
 import com.ldl.bean.Concern;
 import com.ldl.bean.VO.*;
+import com.ldl.bean.WatchingResult;
 import com.ldl.bean.dto.ClassDto;
 import com.ldl.mapper.ClassMapper;
 import com.ldl.mapper.HistoryMapper;
@@ -11,10 +12,11 @@ import com.ldl.mapper.StarMapper;
 import com.ldl.mapper.VideoMapper;
 import com.ldl.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +29,7 @@ public class ClassServiceImpl implements ClassService {
     @Autowired
     ClassMapper classMapper;
     @Autowired
+    @Qualifier("with_Hms")
     SimpleDateFormat simpleDateFormat;
 
     @Autowired
@@ -34,6 +37,8 @@ public class ClassServiceImpl implements ClassService {
 
     @Autowired
     private VideoMapper videoMapper;
+
+
     /*
     * 老师端上传课程
     * */
@@ -50,31 +55,22 @@ public class ClassServiceImpl implements ClassService {
             video =clazz.getVideo();
 
             if(music!=null&&music.size()!=0){
-                System.out.println("音乐文件数量："+classMapper.addClass_music(clazz.getClass_id(), music));
-            }else {
-                System.out.println("音乐文件数量：0");
+                classMapper.addClass_music(clazz.getClass_id(), music);
             }
 
             if(picture!=null&&picture.size()!=0){
-                System.out.println("图片文件数量："+classMapper.addClass_picture(clazz.getClass_id(), picture));
-            }else {
-                System.out.println("图片文件数量：0");
+                classMapper.addClass_picture(clazz.getClass_id(), picture);
             }
-
             if(video!=null&&video.size()!=0){
-                System.out.println("视频文件数量："+classMapper.addClass_video(clazz.getClass_id(), video));
-            }else {
-                System.out.println("视频文件数量：0");
+                classMapper.addClass_video(clazz.getClass_id(), video);
             }
 
             if(clazz.getCover()!=null){
-                System.out.println("封面数量："+classMapper.addClass_cover(clazz.getClass_id(), clazz.getCover()));
-            }else {
-                System.out.println("封面数量：0");
+                classMapper.addClass_cover(clazz.getClass_id(), clazz.getCover());
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
+
         }
 
         return new Class(clazz.getClass_id(),
@@ -135,6 +131,10 @@ public class ClassServiceImpl implements ClassService {
             historyMapper.insertHistory(openid,cid,simpleDateFormat.format(new Date()));
         }
 
+        //更新连续学习天数的状态
+
+
+
         ClassVo1 classVo1 = classMapper.selectClassById(cid, openid);
 
         Concern concern = videoMapper.selectConcernBy(openid, classVo1.getTeacher().getopenid());
@@ -177,11 +177,18 @@ public class ClassServiceImpl implements ClassService {
         StudyTimeVo studyTimeVo = classMapper.selectStudyTimeByOpenId(openId, DateUtil.formatToDay(new Date()));
         List<StarClassVo> starClassVos = classMapper.selectHistory(openId);
         studyTimeVo.setClassVo(starClassVos);
+        WatchingResult allStudyTime = DateUtil.getWatchingResult(studyTimeVo.getAllStudyTime());
+        WatchingResult thisDayTime = DateUtil.getWatchingResult(studyTimeVo.getThisDayTime());
+        studyTimeVo.setAllStudyTimeResult(allStudyTime);
+        studyTimeVo.setThisDayTimeResult(thisDayTime);
         return studyTimeVo;
     }
 
     @Override
-    public void updateStudyTime(String openId, String addTime) {
+    public WatchingResult updateStudyTime(String openId, String start, String end) {
+        BigInteger endTime = new BigInteger(end);
+        BigInteger startTime = new BigInteger(start);
+        long addTime =endTime.subtract(startTime).longValue();
         if(classMapper.selectAllStudyTime(openId) == null){
             classMapper.insertAllStudyTime(openId);
         }
@@ -189,8 +196,9 @@ public class ClassServiceImpl implements ClassService {
             classMapper.insertStudyTime(openId,DateUtil.formatToDay(new Date()));
         }
 
-        classMapper.updateStudyTime(Integer.parseInt(addTime),DateUtil.formatToDay(new Date()),openId);
-        classMapper.updateAllStudyTime(Integer.parseInt(addTime),openId);
+        classMapper.updateStudyTime(addTime,DateUtil.formatToDay(new Date()),openId);
+        classMapper.updateAllStudyTime(addTime,openId);
+        return DateUtil.getWatchingResult(startTime,endTime);
     }
 
     @Override
@@ -198,26 +206,45 @@ public class ClassServiceImpl implements ClassService {
         classDto.setUpdateTime(simpleDateFormat.format(new Date()));
         classMapper.updateClass(classDto);
         String cid = classDto.getCid();
-        if(classDto.getCoverDto().getIsUpdateCover().equals("1")){
+
+        if("1".equals(classDto.getCoverDto().getIsUpdateCover())){
             classMapper.updateCoverByCid(cid,classDto.getCoverDto().getCover());
         }
 
-        if (classDto.getMusicDto().getIsUpdateMusic().equals("1")){
+        if ( "1".equals(classDto.getMusicDto().getIsUpdateMusic())  ){
             classMapper.deleteMusic(Integer.parseInt(cid));
             classMapper.addClass_music(Integer.parseInt(cid),classDto.getMusicDto().getMusics());
         }
 
-        if (classDto.getVideoDto().getIsUpdateVideo().equals("1")){
+        if ("1".equals(classDto.getVideoDto().getIsUpdateVideo())){
             classMapper.deleteVideo(Integer.parseInt(cid));
             classMapper.addClass_video(Integer.parseInt(cid),classDto.getVideoDto().getVideos());
         }
 
-        if (classDto.getPictureDto().getIsUpdatePicture().equals("1")){
+        if ("1".equals(classDto.getPictureDto().getIsUpdatePicture())){
             classMapper.deletePicture(Integer.parseInt(cid));
             classMapper.addClass_picture(Integer.parseInt(cid),classDto.getPictureDto().getPictures());
         }
 
         return 1;
+    }
+
+    @Override
+    public List<Class> getClassByType(String type) {
+
+        return classMapper.getClassByType(type);
+    }
+
+    @Override
+    public List<Class> getConcernClass(String openid) {
+
+        return classMapper.getConcernClass(openid);
+    }
+
+    @Override
+    public List<StarClassVo> getlatestLearning(String openid) {
+
+        return classMapper.getlatestLearning(openid);
     }
 
 

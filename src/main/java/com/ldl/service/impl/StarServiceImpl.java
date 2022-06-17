@@ -5,6 +5,7 @@ import com.ldl.mapper.ClassMapper;
 import com.ldl.mapper.StarMapper;
 import com.ldl.service.StarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,8 @@ public class StarServiceImpl implements StarService {
     private ClassMapper classMapper;
 
     @Autowired
-    private SimpleDateFormat format;
+    @Qualifier("with_Hms")
+    SimpleDateFormat format;
 
     @Override
     @Transactional(rollbackFor = Exception.class)

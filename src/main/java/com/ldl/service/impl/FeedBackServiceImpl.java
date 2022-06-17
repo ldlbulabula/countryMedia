@@ -4,6 +4,7 @@ import com.ldl.bean.FeedBack;
 import com.ldl.mapper.FeedBackMapper;
 import com.ldl.service.FeedBackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -15,7 +16,8 @@ public class FeedBackServiceImpl implements FeedBackService {
     private FeedBackMapper feedBackMapper;
 
     @Autowired
-    private SimpleDateFormat simpleDateFormat;
+    @Qualifier("with_Hms")
+    SimpleDateFormat simpleDateFormat;
 
     @Override
     public void addFeedBack(String openId,String content){

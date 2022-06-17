@@ -45,9 +45,9 @@ public interface ClassMapper {
 
     String selectAllStudyTime(@Param("openId")String openId);
 
-    int updateStudyTime(@Param("addTime")int addTime,@Param("thisDay")String thisDay,@Param("openId")String openId);
+    int updateStudyTime(@Param("addTime")long addTime,@Param("thisDay")String thisDay,@Param("openId")String openId);
 
-    int updateAllStudyTime(@Param("addTime")int addTime,@Param("openId")String openId);
+    int updateAllStudyTime(@Param("addTime")long addTime,@Param("openId")String openId);
 
     int updateClass(ClassDto classDto);
 
@@ -59,4 +59,10 @@ public interface ClassMapper {
 
     int deletePicture(@Param("cid")int cid);
 
+    List<Class> getClassByType(String type);
+
+    List<Class> getConcernClass(String openid);
+
+    List<StarClassVo> getlatestLearning(String openid);
+    String getClassCover(Integer class_id);
 }
