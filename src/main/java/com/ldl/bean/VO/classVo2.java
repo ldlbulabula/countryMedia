@@ -33,7 +33,8 @@ public class classVo2 {
     private String likeNum;
     @ApiModelProperty("收藏的人数")
     private String starNum;
-
+    @ApiModelProperty("审核情况：0未审核,1通过,-1不通过")
+    private String isCheck;
     public classVo2() {
     }
 
@@ -51,6 +52,31 @@ public class classVo2 {
         this.uploadDate = uploadDate;
         this.likeNum = likeNum;
         this.starNum = starNum;
+    }
+
+    public classVo2(Integer class_id, String c_title, String c_summary, String type, List<String> music, List<String> picture, List<Vedio0> video, String cover, String ppt, User teacher, String uploadDate, String likeNum, String starNum, String isCheck) {
+        this.class_id = class_id;
+        this.c_title = c_title;
+        this.c_summary = c_summary;
+        this.type = type;
+        this.music = music;
+        this.picture = picture;
+        this.video = video;
+        this.cover = cover;
+        this.ppt = ppt;
+        this.teacher = teacher;
+        this.uploadDate = uploadDate;
+        this.likeNum = likeNum;
+        this.starNum = starNum;
+        this.isCheck = isCheck;
+    }
+
+    public String getIsCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(String isCheck) {
+        this.isCheck = isCheck;
     }
 
     public Integer getClass_id() {

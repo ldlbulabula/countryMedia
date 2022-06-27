@@ -23,4 +23,20 @@
     </select>
 
 
+
+    <insert id="insertRely_admin">
+        insert into tbl_rely_admin(openid,cid,relyDate,content) value (#{openId},#{cid},#{relyDate},#{content})
+    </insert>
+    <select id="selectRelysByCid_admin" resultType="RelyVo">
+        SELECT
+                          r.`openid`,
+                          r.`cid`,
+                          r.relyDate,
+                          r.content,
+                          u.faceImg,
+                          u.nickName
+        FROM tbl_rely_admin r LEFT JOIN `user` u ON r.openid = u.openid WHERE r.cid = #{cid}
+        ORDER BY
+            `r`.relyDate
+    </select>
 </mapper>

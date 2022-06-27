@@ -1,5 +1,6 @@
 package com.ldl.controller;
 
+import com.ldl.Util.ObsUtil;
 import com.ldl.bean.AdminPublic;
 import com.ldl.bean.DialogueMenuVo;
 import com.ldl.bean.VO.DialogueVo;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -42,6 +44,13 @@ public class DialogueController {
     @PostMapping(value = "/addDia")
     public int getDialogueMenuVos(String openId,String toOpenId,String type,String content){
         return dialogueService.insertDialogue(openId,toOpenId,content,type);
+    }
+
+    @ApiOperation("文件上传")
+    @ResponseBody
+    @PostMapping(value = "/sendFile")
+    public String sendFile(MultipartFile file){
+        return ObsUtil.uploadFile(file);
     }
 
     @ApiOperation("直接获取全部的系统消息")

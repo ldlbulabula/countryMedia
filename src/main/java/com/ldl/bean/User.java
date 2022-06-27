@@ -13,14 +13,15 @@ public class User {
     private String faceImg;
     @ApiModelProperty("昵称")
     private String nickName;
+    @ApiModelProperty("注册时间")
+    private String registerTime;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "openid='" + openid + '\'' +
-                ", faceImg='" + faceImg + '\'' +
-                ", nickName='" + nickName + '\'' +
-                '}';
+    public User(Integer id, String openid, String faceImg, String nickName, String registerTime) {
+        this.id = id;
+        this.openid = openid;
+        this.faceImg = faceImg;
+        this.nickName = nickName;
+        this.registerTime = registerTime;
     }
 
     public User(Integer id, String openid, String faceImg, String nickName) {
@@ -41,27 +42,35 @@ public class User {
         this.id = id;
     }
 
-    public String getopenid() {
+    public String getOpenid() {
         return openid;
     }
 
-    public void setopenid(String openid) {
+    public void setOpenid(String openid) {
         this.openid = openid;
     }
 
-    public String getfaceImg() {
+    public String getFaceImg() {
         return faceImg;
     }
 
-    public void setfaceImg(String faceImg) {
+    public void setFaceImg(String faceImg) {
         this.faceImg = faceImg;
     }
 
-    public String getnickName() {
+    public String getNickName() {
         return nickName;
     }
 
-    public void setnickName(String nickName) {
+    public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public String getRegisterTime() {
+        return registerTime;
+    }
+
+    public void setRegisterTime(String registerTime) {
+        this.registerTime = registerTime;
     }
 }

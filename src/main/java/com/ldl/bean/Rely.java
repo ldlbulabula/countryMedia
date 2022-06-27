@@ -57,4 +57,15 @@ public class Rely {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "Rely{" +
+                "id=" + id +
+                ", openId='" + openId + '\'' +
+                ", cid=" + cid +
+                ", relyDate='" + relyDate + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

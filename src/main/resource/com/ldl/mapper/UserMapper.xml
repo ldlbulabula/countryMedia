@@ -3,9 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldl.mapper.UserMapper">
+
+    <resultMap id="PreviousAdminClass" type="com.ldl.bean.VO.PreviousAdminClass">
+        <id property="adminClass_id" column="adminClass_id"/>
+        <result property="a_title" column="a_title"/>
+        <result property="uploadDate" column="uploadDate"/>
+        <result property="isComplete" column="openid"/>
+    </resultMap>
+    <resultMap id="CompleteUser" type="com.ldl.bean.VO.CompleteUser">
+        <result property="completeDate" column="completeDate"/>
+        <association property="user" select="com.ldl.mapper.UserMapper.selectUserByOpenId" column="openid" javaType="user"/>
+    </resultMap>
     <insert id="register" parameterType="com.ldl.bean.User">
-        insert into user(openid,nickName,faceImg)
-        values (#{openid},#{nickName},#{faceImg})
+        insert into user(openid,nickName,faceImg,registerTime)
+        values (#{openid},#{nickName},#{faceImg},#{registerTime})
     </insert>
 
     <update id="updateUser">
@@ -43,5 +54,30 @@
     <select id="selectUserVoByOpenId" resultType="com.ldl.bean.VO.UserVo">
         select openid,faceImg,nickName,signature,address,sex,birth,constellation from `user` where openid = #{openId}
     </select>
-
+    <select id="getNewUserCountOfDay" resultType="int">
+        SELECT COUNT(*) FROM USER WHERE registerTime LIKE #{registerTime}
+    </select>
+    <select id="getTotalCountOfUser" resultType="int">
+        SELECT COUNT(*) FROM USER
+    </select>
+    <insert id="completeAdminClass">
+        insert into adminClass_complete(adminClass_id,openid,completeDate) values (#{adminClass_id},#{openid},#{completeDate})
+    </insert>
+    <select id="getCompleteAdminClassCondition" resultType="String">
+        select openid from adminClass_complete where adminClass_id=#{adminClass_id} and openid=#{openid}
+    </select>
+    <select id="getPreviousAdminClass" resultMap="PreviousAdminClass">
+        SELECT a.adminClass_id,a.a_title,a.uploadDate,ac.openid
+        FROM adminClass a
+        LEFT OUTER JOIN adminClass_complete ac
+        ON a.adminClass_id=ac.adminClass_id
+        AND ac.openid=#{openid}
+        ORDER BY uploadDate DESC
+    </select>
+    <update id="updateRoleAsTeacher">
+        UPDATE USER SET role=1 WHERE  openid=( SELECT openid FROM `teacher_authentication` WHERE aid=#{aid})
+    </update>
+    <select id="selectCompleteUser" resultMap="CompleteUser">
+         SELECT openid,completeDate FROM adminClass_complete WHERE adminClass_id=#{adminClass_id}
+    </select>
 </mapper>

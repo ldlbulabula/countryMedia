@@ -1,20 +1,27 @@
 package com.ldl.service.impl;
 
+
 import com.ldl.bean.User;
 import com.ldl.bean.VO.AllNum;
+import com.ldl.bean.VO.PreviousAdminClass;
 import com.ldl.bean.VO.UserVo;
 import com.ldl.mapper.UserMapper;
 import com.ldl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
-
+    @Autowired
+    @Qualifier("with_Hms")
+    SimpleDateFormat simpleDateFormat;
     /**
      * 登录的逻辑：
      *       得到openid后，判断登录成功与否
@@ -28,7 +35,7 @@ public class UserServiceImpl implements UserService {
         } catch (Exception ignored) {
 
          }
-        return userMapper.login(user.getopenid());
+        return userMapper.login(user.getOpenid());
     }
 
     @Override
@@ -72,5 +79,28 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    @Override
+    public int completeAdminClass(String openid, int adminClass_id) {
+        try {
+           return userMapper.completeAdminClass(openid,adminClass_id, simpleDateFormat.format(new Date()));
+        } catch (Exception e) {
+            return 0;
+        }
+
+    }
+
+    @Override
+    public String getCompleteAdminClassCondition(String openid, int adminClass_id) {
+        String s = userMapper.getCompleteAdminClassCondition(openid, adminClass_id);
+        if(s==null){
+            return "NotComplete";
+        }else return s;
+    }
+
+    @Override
+    public List<PreviousAdminClass> getPreviousAdminClass(String openid) {
+        return userMapper.getPreviousAdminClass(openid);
     }
 }

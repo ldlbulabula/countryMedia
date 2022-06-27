@@ -3,6 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldl.mapper.AdminClassMapper">
+    <resultMap id="AdminClassVO" type="com.ldl.bean.VO.AdminClassVO">
+        <id property="adminClass_id" column="adminClass_id"/>
+        <result property="a_title" column="a_title"/>
+        <result property="uploadDate" column="uploadDate"/>
+        <result property="cover" column="cover"/>
+        <association property="completeNum" select="com.ldl.mapper.AdminClassMapper.getCompleteNum" javaType="int" column="adminClass_id"/>
+        <association property="commentNum" select="com.ldl.mapper.AdminClassMapper.getCommentNum" javaType="int" column="adminClass_id"/>
+    </resultMap>
+
+
     <insert id="insertAdminClass" useGeneratedKeys="true" keyProperty="adminClass_id" parameterType="com.ldl.bean.AdminClass">
         insert into adminClass(adminClass_id,a_title,a_summary,`type`,openid,uploadDate,
                                cover,ppt,video) values
@@ -14,5 +24,19 @@
     </select>
     <select id="getLatestAdminClass" resultType="com.ldl.bean.AdminClass">
         SELECT*FROM`adminclass`ORDER BY uploadDate DESC LIMIT 0,1
+    </select>
+    <select id="getAdminClassById" resultType="com.ldl.bean.AdminClass">
+        SELECT*FROM`adminclass` where adminClass_id=#{adminClass_id}
+    </select>
+    <select id="selectAdminClass" resultMap="AdminClassVO">
+        SELECT adminClass_id,a_title,uploadDate,cover FROM adminClass ORDER BY uploadDate DESC
+    </select>
+    <select id="getCompleteNum" resultType="int">
+        SELECT COUNT(*) FROM adminClass_complete WHERE adminClass_id=#{adminClass_id}
+    </select>
+    <select id="getCommentNum" resultType="int">
+        SELECT (COUNT(*)+(SELECT COUNT(*) FROM `tbl_comment_admin` WHERE adminClass_id=#{adminClass_id})) commentNum
+        FROM `tbl_rely_admin` WHERE cid IN
+        (SELECT cid FROM `tbl_comment_admin` WHERE adminClass_id=#{adminClass_id})
     </select>
 </mapper>

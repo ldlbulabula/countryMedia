@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldl.mapper.TeacherMapper">
+    <resultMap id="classVo2" type="com.ldl.bean.VO.classVo2">
+        <id property="class_id" column="class_id"/>
+        <result property="c_summary" column="c_summary"/>
+        <result property="c_title" column="c_title"/>
+        <result property="uploadDate" column="uploadDate"/>
+        <result property="type" column="type"/>
+        <result property="cover" column="cover"/>
+        <result property="ppt" column="ppt"/>
+        <result property="likeNum" column="likeNum"/>
+        <result property="starNum" column="starNum"/>
+        <association property="ppt" select="com.ldl.mapper.PPTMapper.selectAddressByCid" javaType="String" column="class_id"/>
+        <association property="teacher" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+        <association property="cover" select="com.ldl.mapper.ClassMapper.getClassCover" javaType="String" column="class_id"/>
+        <collection property="music" select="com.ldl.mapper.VideoMapper.selectMusicByCid" javaType="arrayList" ofType="String" column="class_id"/>
+        <collection property="picture" select="com.ldl.mapper.VideoMapper.selectPictureByCid" javaType="arrayList" ofType="String" column="class_id"/>
+        <collection property="video" select="com.ldl.mapper.VideoMapper.selectVideoByCid" javaType="arrayList" ofType="Vedio0" column="class_id"/>
+    </resultMap>
+
+    <resultMap id="TeacherAuthenticationVO" type="com.ldl.bean.VO.TeacherAuthenticationVO">
+        <id property="aid" column="aid"/>
+        <result property="realName" column="realName"/>
+        <result column="isPass" property="isPass"/>
+        <result column="isRead" property="isRead"/>
+        <result property="authenticationDate" column="authenticationDate"/>
+        <association property="user" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+    </resultMap>
+
+    <select id="getMyAllClass" resultMap="classVo2">
+        SELECT * FROM `class` WHERE openid = #{openId} AND isCheck=1
+    </select>
+    <select id="getMy2Class" resultMap="classVo2">
+        SELECT * FROM `class` WHERE openid = #{openId} AND isCheck=1 ORDER BY uploadDate DESC LIMIT 0,2
+    </select>
+    <select id="searchMyClass" resultMap="classVo2">
+        SELECT * FROM `class` WHERE (openid = #{openId} AND c_title LIKE #{regex} OR c_summary LIKE #{regex} )  AND isCheck=1
+    </select>
+    <insert id="addAuthentication"  useGeneratedKeys="true" keyProperty="aid" parameterType="com.ldl.bean.TeacherAuthentication">
+        insert into teacher_authentication(aid,openid,realName,identity_card_1,identity_card_2,authenticationDate) values (null,#{openid},#{realName},#{identity_card_1},#{identity_card_2},#{authenticationDate})
+    </insert>
+    <update id="checkTeacher">
+        update teacher_authentication set isPass=#{isPass} where aid=#{aid}
+    </update>
+    <select id="getCheckTeacherByAid" resultType="com.ldl.bean.TeacherAuthentication">
+        select *from teacher_authentication where aid=#{aid}
+    </select>
+    <select id="getAllCheckTeacher" resultMap="TeacherAuthenticationVO">
+        select *from teacher_authentication order by authenticationDate desc
+    </select>
+    <select id="checkAuthentication" resultType="com.ldl.bean.TeacherAuthentication">
+        select *from teacher_authentication where aid=#{aid}
+    </select>
+    <update id="updateIsRead">
+         update teacher_authentication set isRead=1 where aid=#{aid} and isRead=0
+    </update>
+</mapper>

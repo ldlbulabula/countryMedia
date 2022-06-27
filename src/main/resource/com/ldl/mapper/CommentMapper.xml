@@ -11,6 +11,38 @@
         <result column="commentDate" property="commentDate"/>
         <collection property="relyList"  javaType="arrayList" column="cid" ofType="relyVo" select="com.ldl.mapper.RelyMapper.selectRelysByCid"></collection>
     </resultMap>
+    <resultMap id="baseMap_admin" type="CommentVo">
+        <id column="cid" property="cid"/>
+        <result column="class_id" property="adminClass_id"/>
+        <result column="openid" property="openid"/>
+        <result column="commentDate" property="commentDate"/>
+        <collection property="relyList"  javaType="arrayList" column="cid" ofType="relyVo" select="com.ldl.mapper.RelyMapper.selectRelysByCid_admin"></collection>
+    </resultMap>
+
+
+    <resultMap id="RelyMessage" type="com.ldl.bean.RelyMessage">
+        <result property="commentId" column="commentId"/>
+        <result property="relyId" column="relyId"/>
+        <result property="relyDate" column="relyDate"/>
+        <result property="relyContent" column="relyContent"/>
+        <result property="myNickName" column="myNickName"/>
+        <association property="class_id" select="com.ldl.mapper.CommentMapper.getClassIdByCommentID" javaType="int" column="commentId"/>
+        <association property="myComment" select="com.ldl.mapper.CommentMapper.getContentByCid" javaType="String" column="commentId"/>
+        <association property="relyUser" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+    </resultMap>
+    <resultMap id="RelyMessage_admin" type="com.ldl.bean.RelyMessage_admin">
+        <result property="commentId" column="commentId"/>
+        <result property="relyId" column="relyId"/>
+        <result property="relyDate" column="relyDate"/>
+        <result property="relyContent" column="relyContent"/>
+        <result property="myNickName" column="myNickName"/>
+        <association property="adminClass_id" select="com.ldl.mapper.CommentMapper.getAdminClassIdByCommentID" javaType="int" column="commentId"/>
+        <association property="myComment" select="com.ldl.mapper.CommentMapper.getContentByCid_admin" javaType="String" column="commentId"/>
+        <association property="relyUser" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+    </resultMap>
+
+
+
     <insert id="insertComment">
         insert into tbl_comment(openid,class_id,commentDate,content) value (#{openId},#{class_id},#{commentDate},#{content})
     </insert>
@@ -26,4 +58,54 @@
             order by
                 `c`.commentDate;
     </select>
+
+
+
+
+    <insert id="insertComment_admin">
+        insert into tbl_comment_admin(openid,adminClass_id,commentDate,content) value (#{openId},#{class_id},#{commentDate},#{content})
+    </insert>
+    <select id="getCommentVoByAdminClass_id" resultMap="baseMap_admin">
+            select   `c`.cid,
+                     `c`.openid,
+                     `c`.adminClass_id,
+                     `c`.commentDate,
+                     `c`.content,
+                     u.faceImg,
+                     u.nickName
+            from tbl_comment_admin `c` left join `user` u on `c`.openid = u.openid where `c`.adminClass_id = #{adminClass_id}
+            order by
+                `c`.commentDate;
+    </select>
+    <select id="getClassIdByCommentID" resultType="int">
+        select class_id from `tbl_comment` where cid=#{commentID}
+    </select>
+    <select id="getAdminClassIdByCommentID" resultType="int">
+        select adminClass_id from `tbl_comment_admin` where cid=#{commentID}
+    </select>
+
+
+
+    <select id="getRelyMessage" resultMap="RelyMessage">
+       SELECT ⁯id relyId,cid commentId,openid,relyDate,content relyContent,
+       (select nickName FROM `user`WHERE openid =#{openid}) myNickName
+       FROM`tbl_rely`WHERE cid IN (SELECT cid FROM`tbl_comment` WHERE openid=#{openid})
+       ORDER BY relyDate DESC
+    </select>
+    <select id="getContentByCid" resultType="String">
+        SELECT content myComment FROM`tbl_comment` WHERE cid=#{cid}
+    </select>
+
+
+
+    <select id="getRelyMessage_admin" resultMap="RelyMessage_admin">
+       SELECT ⁯id relyId,cid commentId,openid,relyDate,content relyContent,
+       (select nickName FROM `user`WHERE openid =#{openid}) myNickName
+       FROM`tbl_rely_admin`WHERE cid IN (SELECT cid FROM`tbl_comment_admin` WHERE openid=#{openid})
+       ORDER BY relyDate DESC
+    </select>
+    <select id="getContentByCid_admin" resultType="String">
+        SELECT content myComment FROM`tbl_comment_admin` WHERE cid=#{cid}
+    </select>
+
 </mapper>

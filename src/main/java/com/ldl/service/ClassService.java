@@ -39,4 +39,6 @@ public interface ClassService {
     List<Class> getConcernClass(String openid);
 
     List<StarClassVo> getlatestLearning(String openid);
+
+
 }

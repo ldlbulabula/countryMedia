@@ -3,8 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ldl.mapper.FeedBackMapper"><!--这个是-->
+<mapper namespace="com.ldl.mapper.FeedBackMapper">
+
+    <resultMap id="feedBackVO" type="com.ldl.bean.VO.FeedBackVO">
+        <id property="fid" column="fid"/>
+        <result property="openid" column="openid"/>
+        <result property="content" column="content"/>
+        <result property="create_time" column="create_time"/>
+        <result property="isLook" column="isLook"/>
+        <association property="user" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+    </resultMap>
+
+
     <insert id="insertFeedBack">
         insert into tbl_user_feedback(openid,create_time,content,isLook) value(#{openid},#{create_time},#{content},#{isLook})
     </insert>
+    <select id="selectAllFeedBack" resultMap="feedBackVO">
+        SELECT*FROM `tbl_user_feedback` ORDER BY create_time DESC
+    </select>
+    <select id="selectFeedBackByFid" resultMap="feedBackVO">
+        SELECT*FROM `tbl_user_feedback` where fid=#{fid}
+    </select>
+    <update id="updateIsLookCondition">
+        UPDATE `tbl_user_feedback` SET isLook='1' WHERE fid=#{fid}
+    </update>
 </mapper>

@@ -8,7 +8,7 @@ import java.util.List;
 @ApiModel("课程")
 public class Class {
 
-    @ApiModelProperty(value = "课程的唯一标识",hidden = true)
+    @ApiModelProperty(value = "课程的唯一标识")
     private Integer class_id;
     @ApiModelProperty("课程标题")
     private String c_title;

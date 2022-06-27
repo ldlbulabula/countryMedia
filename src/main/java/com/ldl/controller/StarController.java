@@ -15,7 +15,7 @@ public class StarController {
     @Autowired
     private StarService starService;
 
-    @ApiOperation("修改点赞的接口cid是课程的id")
+    @ApiOperation("修改收藏的接口cid是课程的id")
     @ResponseBody
     @PostMapping(value = "/updateStar")
     public void updateStar(String openId,String cid){

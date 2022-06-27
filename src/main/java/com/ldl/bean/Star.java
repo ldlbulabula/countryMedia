@@ -5,7 +5,7 @@ public class Star {
      String isStar;
      String openId;
      String createTime;
-     String cid;
+     String cid;//课程id
 
      public Star() {
      }

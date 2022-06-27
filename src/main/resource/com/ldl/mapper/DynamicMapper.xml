@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldl.mapper.DynamicMapper">
+
+    <resultMap id="DynamicsMap" type="com.ldl.bean.Dynamic">
+        <id property="did" column="did"/>
+        <result property="type" column="type"/>
+        <result property="class_id" column="class_id"/>
+        <result property="adminClass_id" column="adminClass_id"/>
+        <result property="date" column="date"/>
+        <association property="user" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+        <association property="c_title" select="com.ldl.mapper.ClassMapper.getClassTitle" javaType="String" column="class_id"/>
+    </resultMap>
+
+
+    <insert id="insertStarIntoDynamic">
+        INSERT INTO `dynamic`(TYPE,class_id,openid,DATE) VALUES('收藏',#{cid},#{openId},#{createTime})
+    </insert>
+    <insert id="insertCommentIntoDynamic">
+        INSERT INTO `dynamic`(TYPE,class_id,openid,DATE) VALUES('评论',#{class_id},#{openId},#{commentDate})
+    </insert>
+    <insert id="insertRelyIntoDynamic">
+        INSERT INTO `dynamic`(TYPE,class_id,openid,DATE) VALUES('评论',#{cid},#{openId},#{relyDate})
+    </insert>
+
+
+    <insert id="insertCommentIntoDynamic_admin">
+        INSERT INTO `dynamic`(TYPE,adminClass_id,openid,DATE) VALUES('评论',#{class_id},#{openId},#{commentDate})
+    </insert>
+    <insert id="insertRelyIntoDynamic_admin">
+        INSERT INTO `dynamic`(TYPE,adminClass_id,openid,DATE) VALUES('评论',#{cid},#{openId},#{relyDate})
+    </insert>
+
+    <select id="getDynamics" resultMap="DynamicsMap">
+        SELECT*FROM `dynamic` where date like #{date} order by date desc
+    </select>
+</mapper>

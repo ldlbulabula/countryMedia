@@ -2,6 +2,7 @@ package com.ldl.service.impl;
 
 import com.ldl.bean.Star;
 import com.ldl.mapper.ClassMapper;
+import com.ldl.mapper.DynamicMapper;
 import com.ldl.mapper.StarMapper;
 import com.ldl.service.StarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class StarServiceImpl implements StarService {
     private ClassMapper classMapper;
 
     @Autowired
+    private DynamicMapper dynamicMapper;
+    @Autowired
     @Qualifier("with_Hms")
     SimpleDateFormat format;
 
@@ -36,6 +39,7 @@ public class StarServiceImpl implements StarService {
         }else {
             star.setIsStar("1");
             classMapper.updateClassStar(Integer.parseInt(cid),1);
+            dynamicMapper.insertStarIntoDynamic(star);
         }
 
         starMapper.updateStar(star);

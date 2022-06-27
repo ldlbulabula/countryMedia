@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldl.mapper.SearchMapper">
+    <resultMap id="classVo2" type="com.ldl.bean.VO.classVo2">
+        <id property="class_id" column="class_id"/>
+        <result property="c_summary" column="c_summary"/>
+        <result property="c_title" column="c_title"/>
+        <result property="uploadDate" column="uploadDate"/>
+        <result property="type" column="type"/>
+        <result property="cover" column="cover"/>
+        <result property="ppt" column="ppt"/>
+        <result property="likeNum" column="likeNum"/>
+        <result property="starNum" column="starNum"/>
+        <association property="ppt" select="com.ldl.mapper.PPTMapper.selectAddressByCid" javaType="String" column="class_id"/>
+        <association property="teacher" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
+        <association property="cover" select="com.ldl.mapper.ClassMapper.getClassCover" javaType="String" column="class_id"/>
+        <collection property="music" select="com.ldl.mapper.VideoMapper.selectMusicByCid" javaType="arrayList" ofType="String" column="class_id"/>
+        <collection property="picture" select="com.ldl.mapper.VideoMapper.selectPictureByCid" javaType="arrayList" ofType="String" column="class_id"/>
+        <collection property="video" select="com.ldl.mapper.VideoMapper.selectVideoByCid" javaType="arrayList" ofType="Vedio0" column="class_id"/>
+    </resultMap>
+    <resultMap id="AdminClassVO" type="com.ldl.bean.VO.AdminClassVO">
+        <id property="adminClass_id" column="adminClass_id"/>
+        <result property="a_title" column="a_title"/>
+        <result property="uploadDate" column="uploadDate"/>
+        <result property="cover" column="cover"/>
+        <association property="completeNum" select="com.ldl.mapper.AdminClassMapper.getCompleteNum" javaType="int" column="adminClass_id"/>
+        <association property="commentNum" select="com.ldl.mapper.AdminClassMapper.getCommentNum" javaType="int" column="adminClass_id"/>
+    </resultMap>
+
+    <select id="indexSearch" resultMap="classVo2">
+        SELECT * FROM `class` WHERE( openid IN ( SELECT openid FROM USER WHERE nickName LIKE #{regex} ) OR c_summary LIKE #{regex} OR  c_title LIKE #{regex} )AND isCheck=1
+    </select>
+    <select id="starSearch" resultMap="classVo2">
+        SELECT * FROM `class` WHERE class_id IN ( select cid from tbl_starclass where openId = #{openid} and isStar=1 ) AND ( c_summary LIKE #{regex} OR  c_title LIKE #{regex} ) AND isCheck=1
+    </select>
+    <select id="AdminClassSearch" resultType="com.ldl.bean.AdminClass">
+        SELECT * FROM `adminclass` WHERE a_summary LIKE #{regex} OR  a_title LIKE #{regex} OR uploadDate LIKE #{regex} ORDER BY uploadDate DESC
+    </select>
+    <select id="TeacherAuthenticationSearch" resultType="com.ldl.bean.TeacherAuthentication">
+        SELECT * FROM`teacher_authentication` WHERE realName LIKE #{regex} ORDER BY authenticationDate DESC
+    </select>
+    <select id="AdminClassSearch_admin" resultMap="AdminClassVO">
+        SELECT adminClass_id,a_title,uploadDate,cover FROM adminClass WHERE a_title LIKE #{regex} ORDER BY uploadDate DESC
+    </select>
+    <select id="searchAdminPublic" resultType="com.ldl.bean.AdminPublic">
+        select * from tbl_admin_public where content like #{regex} or title like #{regex}
+    </select>
+</mapper>

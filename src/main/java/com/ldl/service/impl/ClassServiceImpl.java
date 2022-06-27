@@ -44,7 +44,7 @@ public class ClassServiceImpl implements ClassService {
     * */
     @Override
     public Class uploadClass(Class clazz) {
-        System.out.println("来到了uploadClass的service"+simpleDateFormat.format(new Date()));
+
         List<String> music =null;
         List<String> picture =null;
         List<String> video =null;
@@ -136,9 +136,10 @@ public class ClassServiceImpl implements ClassService {
 
 
         ClassVo1 classVo1 = classMapper.selectClassById(cid, openid);
-
-        Concern concern = videoMapper.selectConcernBy(openid, classVo1.getTeacher().getopenid());
-
+        Concern concern =null;
+        if(classVo1.getTeacher()!=null) {
+            concern = videoMapper.selectConcernBy(openid, classVo1.getTeacher().getOpenid());
+        }
         //是否关注了
         if (concern == null){
             classVo1.setIsConcernTeacher("0");
@@ -190,10 +191,18 @@ public class ClassServiceImpl implements ClassService {
         BigInteger startTime = new BigInteger(start);
         long addTime =endTime.subtract(startTime).longValue();
         if(classMapper.selectAllStudyTime(openId) == null){
-            classMapper.insertAllStudyTime(openId);
+            try {
+                classMapper.insertAllStudyTime(openId);
+            } catch (Exception e) {
+                System.out.println("196行报错");
+            }
         }
         if (classMapper.selectStudyTime(openId,DateUtil.formatToDay(new Date())) == null){
-            classMapper.insertStudyTime(openId,DateUtil.formatToDay(new Date()));
+            try {
+                classMapper.insertStudyTime(openId,DateUtil.formatToDay(new Date()));
+            } catch (Exception e) {
+                System.out.println("203行报错");
+            }
         }
 
         classMapper.updateStudyTime(addTime,DateUtil.formatToDay(new Date()),openId);
@@ -246,6 +255,7 @@ public class ClassServiceImpl implements ClassService {
 
         return classMapper.getlatestLearning(openid);
     }
+
 
 
 }

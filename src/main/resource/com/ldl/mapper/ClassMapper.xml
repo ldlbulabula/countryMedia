@@ -39,6 +39,7 @@
         <result property="ppt" column="ppt"/>
         <result property="likeNum" column="likeNum"/>
         <result property="starNum" column="starNum"/>
+        <result property="isCheck" column="isCheck"/>
         <association property="ppt" select="com.ldl.mapper.PPTMapper.selectAddressByCid" javaType="String" column="class_id"/>
         <association property="teacher" select="com.ldl.mapper.UserMapper.selectUserByOpenId" javaType="user" column="openid"/>
         <association property="cover" select="com.ldl.mapper.ClassMapper.getClassCover" javaType="String" column="class_id"/>
@@ -118,23 +119,23 @@
     </delete>
 
     <select id="getAllClass" resultType="com.ldl.bean.Class">
-        SELECT * FROM `class`
+        SELECT * FROM `class`where isCheck=1
     </select>
 
     <select id="getLatestClass" resultType="com.ldl.bean.Class">
-        SELECT * FROM `class`order by uploadDate desc limit 0,1
+        SELECT * FROM `class` where isCheck=1 order by uploadDate desc limit 0,1
     </select>
 
     <select id="selectClassVos" resultType="com.ldl.bean.VO.ClassIdVo">
         SELECT t1.`class_id` classid,t1.c_title title,t1.starNum,t1.`uploadDate` createTime, t2.cover
         FROM `class` t1,class_cover t2
-        WHERE  t2.`class_id` = t1.`class_id`;
+        WHERE  t2.`class_id` = t1.`class_id` and t1.isCheck=1
     </select>
 
     <select id="selectClassVosComment" resultType="com.ldl.bean.VO.ClassIdVo">
             select t1.`class_id` classid,t1.c_title title,t1.starNum,t1.`uploadDate` createTime, t2.cover
             FROM `class` t1,class_cover t2
-            WHERE  t2.`class_id` = t1.`class_id`
+            WHERE  t2.`class_id` = t1.`class_id` and t1.isCheck=1
             order by likeNum desc limit 0,#{num}
     </select>
 
@@ -147,15 +148,15 @@
           AND t4.`openId` = #{openid}
           AND t5.`cid` = t1.`class_id`
           AND t5.`openId` = #{openid}
-          AND t1.class_id = #{cid};
+          AND t1.class_id = #{cid}
     </select>
 
     <select id="selectStarClass" resultMap="starClassVo">
         select t1.class_id,t1.c_title,t2.cover,t1.uploadDate,t1.starNum,t1.openid
         from `class` t1,class_cover t2
         where t1.class_id
-                  in (select cid from tbl_starclass where openid = #{openid})
-        and t2.class_id = t1.class_id
+                  in (select cid from tbl_starclass where openId = #{openid} and isStar=1)
+        and t2.class_id = t1.class_id and t1.isCheck=1
     </select>
 
     <select id="selectHistory" resultMap="starClassVo">
@@ -163,7 +164,7 @@
         from `class` t1,class_cover t2
         where t1.class_id
             in (select cid from tbl_history where openid = #{openid})
-          and t2.class_id = t1.class_id
+          and t2.class_id = t1.class_id and t1.isCheck=1
     </select>
 
     <select id="selectStudyTimeByOpenId" resultType="com.ldl.bean.VO.StudyTimeVo">
@@ -179,12 +180,14 @@
         select openid from tbl_study_time where openid = #{openId}
     </select>
     <select id="getClassByType" resultMap="classVo2">
-        SELECT * FROM `class` WHERE TYPE=#{type}
+        SELECT * FROM `class` WHERE TYPE=#{type}  and isCheck=1
     </select>
+
     <select id="getConcernClass" resultMap="classVo2">
         SELECT cl.class_id,cl.c_summary,cl.type,cl.uploadDate,cl.likeNum,cl.starNum,cl.openid,cl.c_title
         FROM `class` cl,`concern` co
-        WHERE cl.openid=co.buid AND co.uid=#{openid}
+        WHERE cl.openid=co.buid AND co.uid=#{openid} and cl.isCheck=1
+        ORDER BY cl.uploadDate DESC
     </select>
 
     <select id="getlatestLearning" resultMap="starClassVo">
@@ -192,10 +195,28 @@
         from `class` t1,class_cover t2
         where t1.class_id
             in (select cid from tbl_history where openid = #{openid} ORDER BY lookTime DESC)
-          and t2.class_id = t1.class_id
+          and t2.class_id = t1.class_id and t1.isCheck=1
           LIMIT 0,3
     </select>
     <select id="getClassCover" resultType="String">
         SELECT cover FROM`class_cover`WHERE class_id=#{class_id}
+    </select>
+    <select id="getClassTitle" resultType="String">
+        SELECT c_title FROM`class`WHERE class_id=#{class_id}
+    </select>
+    <select id="getNotCheckClass" resultMap="classVo2">
+        SELECT * FROM `class`
+        WHERE isCheck=0 ORDER BY uploadDate DESC
+    </select>
+    <update id="checkClass">
+        UPDATE `class` SET isCheck=#{isCheck} ,checkDate=#{checkDate} WHERE class_id=#{class_id}
+    </update>
+    <select id="getCheckedClass" resultMap="classVo2">
+        SELECT * FROM `class`
+        WHERE isCheck!=0 ORDER BY checkDate DESC
+    </select>
+    <select id="getClassCheckCondition" resultType="String">
+        SELECT isCheck FROM `class`
+        WHERE class_id=#{class_id}
     </select>
 </mapper>

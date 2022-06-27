@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 
+
 @Controller()
 @RequestMapping("/class")
 public class ClassController {
@@ -29,6 +30,7 @@ public class ClassController {
     SimpleDateFormat simpleDateFormat;
     @Autowired
     private AdminClassService adminClassService;
+
 //    @Autowired
 //    private WatchTimeService watchTimeService;
     /**
@@ -41,7 +43,7 @@ public class ClassController {
     @ResponseBody
     public Class uploadClass(String c_title, String c_summary, String type, @RequestParam(value = "music[]",required = false) ArrayList<String> music, @RequestParam(value = "picture[]",required = false) ArrayList<String> picture, @RequestParam(value = "video[]",required = false) ArrayList<String> video, String cover, String openid){
 
-        Class clazz = classService.uploadClass(
+        return classService.uploadClass(
              new Class(              //课程
                     null,    //课程id
                     c_title,        //标题
@@ -57,8 +59,6 @@ public class ClassController {
                      "0"
             )
         );
-        System.out.println(clazz);
-        return clazz;
     }
     @ApiOperation("获取全部课程")
     @PostMapping(value = "/getAllClass",produces = "application/json;charset=UTF-8")
@@ -121,7 +121,8 @@ public class ClassController {
     @PostMapping("/getClassByCid")
     @ResponseBody
     public Object getClassByCid(String cid,String openId){
-        if (openId.equals("undefined")){
+        if ("undefined".equals(openId)){
+
             return "openid is undefined";
         }
         return classService.getClassByCid(cid, openId);
@@ -191,11 +192,10 @@ public class ClassController {
         return classService.getlatestLearning(openid);
     }
 
-
-//    @ApiOperation("记录学习时间")
-//    @PostMapping("/addWatchingTime")
-//    @ResponseBody
-//    public int addWatchingTime(long start,long end,String openid){
-//       return watchTimeService.addWatchTime(start,end,openid);
-//    }
+    @ApiOperation("普法课程id获取对应的普法课程")
+    @PostMapping("/getAdminClassById")
+    @ResponseBody
+    public AdminClass getAdminClassById(String id){
+        return adminClassService.getAdminClassById(id);
+    }
 }

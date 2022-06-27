@@ -12,13 +12,19 @@ public class CommentVo {
     private String faceImg;
     private String nickName;
     private List<RelyVo> relyList;
-
+    private boolean isOpen=false;
 
 
     public CommentVo() {
     }
 
+    public boolean isOpen() {
+        return isOpen;
+    }
 
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
 
     public Integer getCid() {
         return cid;

@@ -1,9 +1,12 @@
 package com.ldl.controller;
 
 import com.ldl.bean.AdminClass;
-import com.ldl.service.AdminClassService;
-import com.ldl.service.AdminService;
-import com.ldl.service.ClassService;
+import com.ldl.bean.BasicData;
+import com.ldl.bean.Dynamic;
+import com.ldl.bean.User;
+import com.ldl.bean.VO.AdminClassVO;
+import com.ldl.bean.VO.FeedBackVO;
+import com.ldl.service.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,6 +34,17 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private FeedBackService feedBackService;
+
+    @Autowired
+    private BasicDataService basicDataService;
+
+    @Autowired
+    private DynamicService dynamicService;
+
+
 
     @ApiOperation("上传管理员课程")
     @PostMapping(value = "/uploadAdminClass",produces = "application/json;charset=UTF-8")
@@ -78,4 +92,46 @@ public class AdminController {
     }
 
 
+    @ApiOperation("查看所有的意见反馈")
+    @PostMapping(value = "/selectFeedBack")
+    @ResponseBody
+    public List<FeedBackVO> selectAllFeedBack(){
+       return feedBackService.selectAllFeedBack();
+    }
+
+    @ApiOperation("根据fid查看意见反馈")
+    @PostMapping(value = "/selectFeedBackByFid")
+    @ResponseBody
+    public FeedBackVO selectFeedBackByFid(String fid){
+        return feedBackService.selectFeedBackByFid(fid);
+    }
+
+    @ApiOperation("基础数据")
+    @PostMapping(value = "/selectBasicData")
+    @ResponseBody
+    public BasicData selectBasicData(){
+        return basicDataService.getBasicData();
+    }
+
+    @ApiOperation("获取动态")
+    @PostMapping(value = "/selectDynamic")
+    @ResponseBody
+    public List<Dynamic> selectDynamic(){
+        return dynamicService.getDynamics();
+    }
+
+    @ApiOperation("查看管理员课程")
+    @PostMapping(value = "/selectAdminClass")
+    @ResponseBody
+    public List<AdminClassVO> selectAdminClass(){
+        return adminClassService.selectAdminClass();
+    }
+
+    @ApiOperation("查看完成人员")
+    @PostMapping(value = "/selectCompleteUser")
+    @ResponseBody
+    public List<User> selectCompleteUser(int adminClass_id){
+        return adminService.selectCompleteUser(adminClass_id);
+    }
+    
 }

@@ -1,10 +1,7 @@
 package com.ldl.mapper;
 
 import com.ldl.bean.Class;
-import com.ldl.bean.VO.ClassIdVo;
-import com.ldl.bean.VO.ClassVo1;
-import com.ldl.bean.VO.StarClassVo;
-import com.ldl.bean.VO.StudyTimeVo;
+import com.ldl.bean.VO.*;
 import com.ldl.bean.dto.ClassDto;
 import org.apache.ibatis.annotations.Param;
 
@@ -65,4 +62,13 @@ public interface ClassMapper {
 
     List<StarClassVo> getlatestLearning(String openid);
     String getClassCover(Integer class_id);
+    String getClassTitle(Integer class_id);
+
+    List<classVo2> getNotCheckClass();
+
+    int checkClass(@Param("isCheck")int isCheck,@Param("class_id")int class_id, @Param("checkDate")String checkDate);
+
+    List<classVo2> getCheckedClass();
+
+    String getClassCheckCondition(int class_id);
 }
